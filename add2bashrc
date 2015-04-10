@@ -1,0 +1,24 @@
+
+
+
+
+
+export WEBROOT=/var/www
+export CGI_BIN=/var/www/cgi-bin
+export MYSQLDATA=/var/lib/mysql
+export MYSQL="mysql -u${MySQL_USER} -p${SQL_PASSWORD}"
+export SQL_USER="root"
+export SQL_PASSWORD="genome"
+export MySQL_USER=${SQL_USER}
+export MYSQL="mysql -u${MySQL_USER} -p${SQL_PASSWORD}"
+export USE_SAMTABIX=1
+export SAMTABIXDIR="~/bin/samtabix/"
+export PATH=~/bin/x86_64:$PATH
+export PATH=$SAMTABIXDIR:$PATH
+
+
+export SQL_PASSWORD="genome"
+export MACHTYPE='x86_64'
+export HOST='example.com'
+export DEFAULTGENOME=maize
+export BROWSERNAME='greenome browser'
