@@ -1,33 +1,49 @@
-INITIAL SERVER SETUP
-NETWORK ACCESS
-sudo su
-# Updated iptables to allow incoming traffic on ports 80 and 443
+####################################
+# gb init ##########################
+####################################
+
+SCRIPTDIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+echo 'source $SCRIPTDIR/config' >> ~/.bashrc
+source ~/.bashrc
+ln -s $SCRIPTDIR/.hg.conf ~/.hg.conf
+cp my.cnf /etc/my.cnf
+
+#FIREWALL/SELINUX SETTINGS
 iptables -I INPUT 1 -p tcp --dport 443 -j ACCEPT
 iptables -I INPUT 1 -p tcp --dport 80 -j ACCEPT
 service iptables save
 service iptables restart
-sed -i ‘s/enforcing/disables/g’ /etc/selinux/config
+sed -i 's/enforcing/disabled/g' /etc/selinux/config
 echo 0 > /selinux/enforce
 
-INSTALL DEPENDENCIES
+#INSTALL DEPENDENCIES
 yum update
 yum upgrade
 yum -y install epel-release
 yum update
-yum install mysql mysql-server httpd git mysql-devel.x86_64 libimobiledevice-devel.x86_64 libplist-devel.x86_64 usbmuxd-devel.x86_64 gcc libpng*x86* libstdc++-* tcsh R vim
+yum install mysql mysql-server httpd git mysql-devel.x86_64 libimobiledevice-devel.x86_64 libplist-devel.x86_64 usbmuxd-devel.x86_64 gcc libpng*x86* libstdc++-* tcsh R vim nano
 
-SYMLINKS
-### ln -s /usr/lib64/libssl.so.1.0.1e /usr/lib/libssl.so.6
-### ln -s /usr/lib64/libcrypto.so.1.0.1e /usr/lib/libcrypto.so.6
+####################################
+# gb http ##########################
+####################################
+rsync -avzP rsync://hgdownload.cse.ucsc.edu/htdocs/ $WEBROOT/
+rsync -avzP rsync://hgdownload.cse.ucsc.edu/cgi-bin/ $CGI_BIN
+
 ln -s /var/www /usr/local/apache
 ln -s /var/www /var/www/html
 ln -s /var/www /var/www/htdocs
+ln -s /var/www/style /var/www/htdocs/style
 ln -s /var/www/cgi-bin /usr/lib/cgi-bin
-ln -s /var/www/cgi-bin /var/www/cgi-bin-dlv04c  #addresses bug with kent src compilation
+ln -s /var/www/cgi-bin /var/www/cgi-bin-${USER}
+rm -f /var/www/trash
+mkdir /var/www/trash
+chmod 777 /var/www/trash
+#chown -R dlv04c:users /var/www #not needed as root
+#chmod -R 777 /var/www  # not needed as root
 
-APACHE CONFIG #MAKE FILE?
-service mysqld start
-chmod 755 /var/lib/mysql/
+
+# change DocumentRoot in /etc/httpd/conf/httpd.conf to /var/www
+sed -i 's/^DocumentRoot.*/DocumentRoot "\/var\/www\"/g' /etc/httpd/conf/httpd.conf
 # activate xbithack
 cat <<EOF >> /etc/httpd/conf/httpd.conf
 XBitHack on
@@ -35,66 +51,20 @@ XBitHack on
 Options +Includes
 </Directory>
 EOF
-# change DocumentRoot in /etc/httpd/conf/httpd.conf to /var/www
-sed -i 's/\/etc\/httpd/\/var\/www/g' /etc/httpd/conf/httpd.conf
 
-MYSQL CONFIG #MAKE FILE?
-# Set these in /etc/my.cnf:
-[client]
-loose-local-infile=1
- [mysqld]
-loose-local-infile=1
-default-storage-engine=MYISAM
+service httpd start
 
-ENVIRONMENTAL VARIABLES #MAKE FILE?
-su dlv04c
-cat <<EOF >> ~/.bashrc
-export WEBROOT=/var/www
-export CGI_BIN=/var/www/cgi-bin
-export MYSQLDATA=/var/lib/mysql
-export MYSQL="mysql -u${MySQL_USER} -p${SQL_PASSWORD}"
-export SQL_USER="root"
-export SQL_PASSWORD="genome"
-export MySQL_USER=${SQL_USER}
-export USE_SAMTABIX=1
-export SAMTABIXDIR="/gbdb/samtabix/"
-export PATH=$HOME/bin/x86_64:$PATH
-export PATH=/gbdb/samtabix:$PATH
-EOF
-source ~/.bashrc
+####################################
+# gb bins ##########################
+####################################
 
-
-~/.hg.conf #MAKE FILE?
-cat <<EOF >> ~/.hg.conf
-db.host=localhost
-db.user=root
-db.password=genome
-EOF
-
-chmod 600 ~/.hg.conf
-INSTALL BROWSER
-sudo su
-source /home/dlv04c/.bashrc
-mkdir /gbdb
-cd $MYSQLDATA
-wget http://hgdownload.cse.ucsc.edu/admin/hgcentral.sql
-rsync -avzP rsync://hgdownload.cse.ucsc.edu/cgi-bin/ $CGI_BIN
-rsync -avzP rsync://hgdownload.cse.ucsc.edu/htdocs/ $WEBROOT/
-#create trash
-rm /var/www/trash
-mkdir /var/www/trash
-chmod 777 /var/www/trash
-# cp /gbdb/kent/src/product/ex.hg.conf /var/www/cgi-bin/hg.conf
-sudo chown -R dlv04c:users /var/www
-sudo chmod -R 777 /var/www
-
-KENT SOURCE
 mkdir -p ~/bin/$MACHTYPE
-cd ~
+cd ~/bin
 git clone http://genome-source.cse.ucsc.edu/samtabix.git samtabix
 cd samtabix
 make
-cd ../
+
+cd ~
 git clone git://genome-source.cse.ucsc.edu/kent.git
 cd kent
 git checkout -t -b beta origin/beta
@@ -102,48 +72,89 @@ git pull
 cd src
 make clean
 make
-cp /gbdb/kent/src/product/ex.hg.conf /var/www/cgi-bin/hg.conf
 
-HG.CONF
-# edit the following lines in /var/www/cgi-bin/hg.conf
-# from http://genomewiki.ucsc.edu/index.php/Enabling_hgLogin
-defaultGenome=Z. mays
-wiki.host=leopold.iplantcollaborative.org
-login.browserName=greenome browser
-login.browserAddr=http://leopold.iplantcollaborative.org
-login.mailSignature=Greenome Browser Staff
-login.mailReturnAddr=dvera@bio.fsu.edu
+cp ~/kent/src/product/ex.hg.conf /var/www/cgi-bin/hg.conf
+cp ~/kent/src/webBlat/webBlat /var/www/cgi-bin/
+cp ~/kent/src/webBlat/webBlat.cfg /var/www/cgi-bin/
+####################################
+# gb conf ##########################
+####################################
+
+#HG.CONF, based on http://genomewiki.ucsc.edu/index.php/Enabling_hgLogin
+sed -i 's/defaultGenome=.*/defaultGenome='"$DEFAULTGENOME"'/g' /var/www/cgi-bin/hg.conf
+sed -i 's/wiki\.host=.*/wiki\.host='"$HOST"'/g' /var/www/cgi-bin/hg.conf
+sed -i 's/login\.browserName=.*/login\.browserName='"$BROWSERNAME"'/g' /var/www/cgi-bin/hg.conf
+sed -i 's/login\.browserAddr=.*/login\.browserAddr=http:\/\/'"$HOST"'/g' /var/www/cgi-bin/hg.conf
+sed -i 's/login\.mailSignature=Greenome Browser Staff=.*/login\.mailSignature=Greenome Browser Staff/g' /var/www/cgi-bin/hg.conf
+sed -i 's/login\.mailReturnAddr=.*/login\.mailReturnAddr='"$EMAILADDRESS"'/g' /var/www/cgi-bin/hg.conf
+#defaultGenome=Z. mays
+#wiki.host=leopold.iplantcollaborative.org
+#login.browserName=greenome browser
+#login.browserAddr=http://leopold.iplantcollaborative.org
+#login.mailSignature=Greenome Browser Staff
+#login.mailReturnAddr=dvera@bio.fsu.edu
 
 
-BLAT
-# from http://genome.ucsc.edu/goldenPath/help/blatSpec.html
-# from https://banana-slug.soe.ucsc.edu/_media/lecture_notes:genomebrowsersetup.pdf
-cp /gbdb/kent/src/webBlat/webBlat /var/www/cgi-bin/
-cp /gbdb/kent/src/webBlat/webBlat.cfg /var/www/cgi-bin/
 
 
-MYSQL PERMISSIONS
+####################################
+# gb mysql #########################
+####################################
+
+cd $MYSQLDATA
+wget http://hgdownload.cse.ucsc.edu/admin/hgcentral.sql
+chmod -R 755 /var/lib/mysql/
+service mysqld start
 mysqladmin -u ${MySQL_USER} password ${SQL_PASSWORD}
 
-${MYSQL} -e "GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, ALTER, CREATE TEMPORARY TABLES on hgcentral.* TO browser@localhost IDENTIFIED BY 'genome';" mysql
-
-${MYSQL} -e "GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, ALTER, CREATE TEMPORARY TABLES on hgfixed.* TO browser@localhost IDENTIFIED BY 'genome';" mysql
-
-${MYSQL} -e "GRANT FILE on *.* TO browser@localhost IDENTIFIED BY 'genome';" mysql
-
-${MYSQL} -e "GRANT SELECT on mysql.* TO browser@localhost IDENTIFIED BY 'genome';" mysql
-
-${MYSQL} -e "GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, ALTER on hgcentral.* TO readwrite@localhost IDENTIFIED BY 'update';" mysql
-
-${MYSQL} -e "FLUSH PRIVILEGES;"
-
-CREATE DATABASES
-#Create a dummy hgFixed
 ${MYSQL} -e "create database hgFixed"
-# create hgcentral
 ${MYSQL} -e "create database hgcentral"
 ${MYSQL} hgcentral < hgcentral.sql
-${MYSQL} -e “create database b73v2”
+${MYSQL} -e "GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, ALTER, CREATE TEMPORARY TABLES on hgcentral.* TO browser@localhost IDENTIFIED BY 'genome';" mysql
+${MYSQL} -e "GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, ALTER, CREATE TEMPORARY TABLES on hgfixed.* TO browser@localhost IDENTIFIED BY 'genome';" mysql
+${MYSQL} -e "GRANT FILE on *.* TO browser@localhost IDENTIFIED BY 'genome';" mysql
+${MYSQL} -e "GRANT SELECT on mysql.* TO browser@localhost IDENTIFIED BY 'genome';" mysql
+${MYSQL} -e "GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, ALTER on hgcentral.* TO readwrite@localhost IDENTIFIED BY 'update';" mysql
+${MYSQL} -e "FLUSH PRIVILEGES;"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
