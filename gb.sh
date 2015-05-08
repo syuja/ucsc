@@ -6,6 +6,7 @@ SCRIPTDIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 echo 'source $SCRIPTDIR/config' >> ~/.bashrc
 source ~/.bashrc
 ln -s $SCRIPTDIR/.hg.conf ~/.hg.conf
+chmod 600 ~/.hg.conf
 cp my.cnf /etc/my.cnf
 
 ######################
@@ -39,7 +40,6 @@ ln -s /var/www /var/www/htdocs
 ln -s /var/www/cgi-bin /usr/lib/cgi-bin
 ln -s /var/www/cgi-bin /var/www/cgi-bin-dlv04c  #addresses bug with kent src compilation
 
-
 ######################
 ### APACHE ###########
 ######################
@@ -53,13 +53,6 @@ Options +Includes
 </Directory>
 EOF
 service httpd start
-
-######################
-### HG.CONF ##########
-######################
-
-cp ~/ucsc/.hg.conf ~/.hg.conf
-chmod 600 ~/.hg.conf
 
 ######################
 ### SITE #############
