@@ -7,7 +7,7 @@ echo 'source $SCRIPTDIR/config' >> ~/.bashrc
 source ~/.bashrc
 ln -s $SCRIPTDIR/.hg.conf ~/.hg.conf
 chmod 600 ~/.hg.conf
-cp my.cnf /etc/my.cnf
+cp $SCRIPTDIR/my.cnf /etc/my.cnf
 
 ######################
 ### NETWORK ##########
