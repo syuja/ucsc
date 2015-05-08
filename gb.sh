@@ -70,9 +70,10 @@ chown -R 755 /var/www
 ######################
 ### SOURCE ###########
 ######################
-
-mkdir -p ~/bin/$MACHTYPE
-mkdir -p ~/software
+mkdir -p $SWDIR
+ln -s $SWDIR ~/software
+mkdir -p $SWDIR/bin/$MACHTYPE
+ln -s $SWDIR/bin ~/bin
 git clone http://genome-source.cse.ucsc.edu/samtabix.git ~/software/samtabix
 cd ~/software/samtabix
 make
