@@ -1,20 +1,24 @@
-export SQL_PASSWORD="genome"
-export MACHTYPE='x86_64'
+# change these
+export GBDIR="/lustre/gbdb"
+export SWDIR="/lustre/software"
 export HOST='example.com'
 export DEFAULTGENOME='Z. mays'
 export BROWSERNAME='greenome browser'
-
-export WEBROOT=/var/www
-export CGI_BIN=/var/www/cgi-bin
-
-export MYSQLDATA=/var/lib/mysql
 export SQL_USER="root"
 export SQL_PASSWORD="genome"
+
+# usually doesn't need changing
+export WEBROOT=/var/www
+export CGI_BIN=/var/www/cgi-bin
+export MACHTYPE='x86_64'
+export MYSQLDATA=/var/lib/mysql
 export MySQL_USER=${SQL_USER}
 export MYSQL="mysql -u${MySQL_USER} -p${SQL_PASSWORD}"
-
 export USE_SSL=1
 export USE_SAMTABIX=1
-export SAMTABIXDIR="$HOME/bin/samtabix/"
-export PATH=$HOME/bin/x86_64:$PATH
+export SAMTABIXDIR="$SWDIR/samtabix/"
+
+# add bins to path
+export PATH=$SWDIR:$PATH
+export PATH=$SWDIR/bin/x86_64:$PATH
 export PATH=$SAMTABIXDIR:$PATH
