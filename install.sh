@@ -3,7 +3,7 @@
 ######################
 
 SCRIPTDIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
-echo 'source $SCRIPTDIR/config' >> ~/.bashrc
+echo "source $SCRIPTDIR/config" >> ~/.bashrc
 source ~/.bashrc
 ln -s $SCRIPTDIR/.hg.conf ~/.hg.conf
 chmod 600 ~/.hg.conf
