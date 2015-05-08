@@ -24,11 +24,12 @@ echo 0 > /selinux/enforce
 ### DEPENDENCIES #####
 ######################
 
-wget http://download.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
-rpm -ivh epel-release-6-8.noarch.rpm
 yum update
-yum upgrade
-yum install hg wget mysql mysql-server httpd git mysql-devel.x86_64 libimobiledevice-devel.x86_64 libplist-devel.x86_64 usbmuxd-devel.x86_64 gcc libpng*x86* libstdc++-* tcsh R vim nano
+yum -y install wget
+wget -O - wget http://download.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm | rpm -ivh -
+yum update
+yum -y install hg wget mysql mysql-server httpd git mysql-devel.x86_64 libimobiledevice-devel.x86_64 libplist-devel.x86_64 usbmuxd-devel.x86_64 gcc libpng*x86* libstdc++-* tcsh R vim nano
+yum update
 
 ######################
 ### SYMLINKS #########
@@ -38,7 +39,7 @@ ln -s /var/www /usr/local/apache
 ln -s /var/www /var/www/html
 ln -s /var/www /var/www/htdocs
 ln -s /var/www/cgi-bin /usr/lib/cgi-bin
-ln -s /var/www/cgi-bin /var/www/cgi-bin-dlv04c  #addresses bug with kent src compilation
+ln -s /var/www/cgi-bin /var/www/cgi-bin-dlv04c
 
 ######################
 ### APACHE ###########
@@ -52,7 +53,7 @@ XBitHack on
 Options +Includes
 </Directory>
 EOF
-service httpd start
+service httpd restart
 
 ######################
 ### SITE #############
@@ -70,6 +71,7 @@ chown -R 755 /var/www
 ######################
 ### SOURCE ###########
 ######################
+
 mkdir -p $SWDIR
 ln -s $SWDIR ~/software
 mkdir -p $SWDIR/bin/$MACHTYPE
@@ -96,7 +98,6 @@ cp ~/software/kent/src/webBlat/webBlat.cfg /var/www/cgi-bin/
 ######################
 
 cp ~/software/kent/src/product/ex.hg.conf /var/www/cgi-bin/hg.conf
-#HG.CONF, based on http://genomewiki.ucsc.edu/index.php/Enabling_hgLogin
 sed -i 's/defaultGenome=.*/defaultGenome='"$DEFAULTGENOME"'/g' /var/www/cgi-bin/hg.conf
 sed -i 's/wiki\.host=.*/wiki\.host='"$HOST"'/g' /var/www/cgi-bin/hg.conf
 sed -i 's/login\.browserName=.*/login\.browserName='"$BROWSERNAME"'/g' /var/www/cgi-bin/hg.conf
@@ -108,7 +109,7 @@ sed -i 's/login\.mailReturnAddr=.*/login\.mailReturnAddr='"$EMAILADDRESS"'/g' /v
 ### MYSQL ############
 ######################
 
-cp ~/ucsc/my.cnf /etc/my.cnf
+cp $SCRIPTDIR/my.cnf /etc/my.cnf
 service mysqld restart
 mysqladmin -u $SQL_USER password $SQL_PASSWORD
 wget -O $MYSQLDATA/hgcentral.sql http://hgdownload.cse.ucsc.edu/admin/hgcentral.sql
