@@ -104,6 +104,8 @@ sed -i 's/login\.browserName=.*/login\.browserName='"$BROWSERNAME"'/g' /var/www/
 sed -i 's/login\.browserAddr=.*/login\.browserAddr=http:\/\/'"$HOST"'/g' /var/www/cgi-bin/hg.conf
 sed -i 's/login\.mailSignature=Greenome Browser Staff=.*/login\.mailSignature=Greenome Browser Staff/g' /var/www/cgi-bin/hg.conf
 sed -i 's/login\.mailReturnAddr=.*/login\.mailReturnAddr='"$EMAILADDRESS"'/g' /var/www/cgi-bin/hg.conf
+sed -i 's/custromTracks\.host=.*/custromTracks\.host=localhost/g' /var/www/cgi-bin/hg.conf
+# PUT IN INFO FOR USER AND PASS HERE FOR CUSTOMTRACKS
 
 ######################
 ### MYSQL ############
