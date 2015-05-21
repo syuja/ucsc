@@ -117,6 +117,7 @@ mysqladmin -u $SQL_USER password $SQL_PASSWORD
 wget -O $MYSQLDATA/hgcentral.sql http://hgdownload.cse.ucsc.edu/admin/hgcentral.sql
 $MYSQL -e "create database hgFixed"
 $MYSQL -e "create database hgcentral"
+$MYSQL -e "create database customTrash"
 $MYSQL hgcentral < hgcentral.sql
 chmod -R 755 /var/lib/mysql/
 service mysqld restart
@@ -127,3 +128,4 @@ ${MYSQL} -e "GRANT FILE on *.* TO browser@localhost IDENTIFIED BY 'genome';" mys
 ${MYSQL} -e "GRANT SELECT on mysql.* TO browser@localhost IDENTIFIED BY 'genome';" mysql
 ${MYSQL} -e "GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, ALTER on hgcentral.* TO readwrite@localhost IDENTIFIED BY 'update';" mysql
 ${MYSQL} -e "FLUSH PRIVILEGES;"
+#${MYSQL} -e "GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,DROP,ALTER,INDEX" on customTrash.* TO ctdbuser@yourWebHost IDENTIFIED by 'ctdbpasswd';" mysql
