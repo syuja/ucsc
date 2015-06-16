@@ -1,39 +1,11 @@
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 INSTALL CUSTOM GENOME
 cd /gbdb
-mkdir b73v2
-faToTwoBit b73v2.fa b73v2.2bit
-twoBitInfo b73v2.2bit stdout | awk '{printf "%s\t%s\t/gbdb/b73v2/b73v2.2bit\n", $1,$2}' > chromInfo.tab
+mkdir b73v3
 
+GENOME="zeaMay3"
+faToTwoBit genome.fa genome.2bit
+twoBitInfo genome.2bit stdout | awk '{printf "%s\t%s\t/gbdb/${GENOME}/genome.2bit\n", $1,$2}' > chromInfo.tab
 
-
 BLAT
 use hgcentral;
 INSERT INTO blatServers (db, host, port, isTrans, canPcr) VALUES ("b73v2", "leopold.iplantcollaborative.org",17777,0,1);
@@ -46,7 +18,7 @@ IDEOGRAM
 # set sql=/gbdb/kent/src/hg/lib/cytoBandIdeo.sql
 # source /gbdb/kent/src/utils/qa/qaConfig.csh
 #######################################################################################
-/gbdb/kent/src/utils/qa/makeCytoBandIdeo.csh
+~/software/kent/src/utils/qa/makeCytoBandIdeo.csh
 # add to trackDb.ra ###################################################################
 track cytoBandIdeo
 shortLabel Chromosome Band (Ideogram)
