@@ -118,7 +118,7 @@ wget -O $MYSQLDATA/hgcentral.sql http://hgdownload.cse.ucsc.edu/admin/hgcentral.
 $MYSQL -e "create database hgFixed"
 $MYSQL -e "create database hgcentral"
 $MYSQL -e "create database customTrash"
-$MYSQL $MYSQLDATA/hgcentral < hgcentral.sql
+$MYSQL hgcentral < $MYSQLDATA/hgcentral.sql
 chmod -R 755 /var/lib/mysql/
 service mysqld restart
 
