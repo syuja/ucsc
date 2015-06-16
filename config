@@ -7,6 +7,7 @@ export BROWSERNAME='greenome browser'
 export SQL_USER="root"
 export SQL_PASSWORD="genome"
 export ADMIN="dlv04c"
+export EMAILADDRESS="vera@genomics.fsu.edu"
 
 # usually doesn't need changing
 export WEBROOT=/var/www
