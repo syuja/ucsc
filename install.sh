@@ -1,4 +1,12 @@
 ######################
+### TODO #############
+######################
+
+# clear from hgcentral: defaultDb, clade, genomeClade, dbDb, dbDbArch, liftOverChain, hubPublic, targetDb
+
+
+
+######################
 ### INIT #############
 ######################
 
