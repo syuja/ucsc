@@ -35,13 +35,40 @@ yum install -y gcc libpng-devel-1.5.13-5.el7.x86_64 libstdc++-*
 ######################
 
 apt-get update -y
-apt-get install -y wget apache2 mysql-server git libpng++-dev gcc libc++-dev libstdc++-4.9-dev
+apt-get install -y wget apache2 mysql-server git libpng++-dev gcc libc++-dev libstdc++-4.9-dev make libssl-dev libmysqlclient-dev
 
 ln -s /var/www /usr/local/apache
 ln -s /var/www /var/www/html
 ln -s /var/www /var/www/htdocs
 ln -s /var/www/cgi-bin /usr/lib/cgi-bin
-ln -s /var/www/cgi-bin /var/www/cgi-bin-dlv04c
+ln -s /var/www/cgi-bin /var/www/cgi-bin-
+ln -s /var/www/cgi-bin /var/www/cgi-bin-root
+
+rsync -avzP rsync://hgdownload.cse.ucsc.edu/cgi-bin/ $CGI_BIN
+rsync -avzP rsync://hgdownload.cse.ucsc.edu/htdocs/ $WEBROOT/
+
+rm /var/www/trash
+mkdir /var/www/trash
+chmod 777 /var/www/trash
+chown -R www-data:www-data /var/www
+chown -R 755 /var/www
+
+mkdir -p $SWDIR
+ln -s $SWDIR ~/software
+mkdir -p $SWDIR/bin/$MACHTYPE
+ln -s $SWDIR/bin ~/bin
+git clone http://genome-source.cse.ucsc.edu/samtabix.git $SWDIR/samtabix
+cd $SWDIR/samtabix
+make
+
+git clone https://github.com/ucscGenomeBrowser/kent $SWDIR/kent
+cd $SWDIR/kent
+git checkout -t -b beta origin/beta
+git pull
+sed -i 's/hgBeacon//g' ~/software/kent/src/hg/makefile
+cd src
+make clean
+make cgi
 
 
 ######################
@@ -111,13 +138,13 @@ mkdir -p $SWDIR
 ln -s $SWDIR ~/software
 mkdir -p $SWDIR/bin/$MACHTYPE
 ln -s $SWDIR/bin ~/bin
-git clone http://genome-source.cse.ucsc.edu/samtabix.git ~/software/samtabix
-cd ~/software/samtabix
+git clone http://genome-source.cse.ucsc.edu/samtabix.git $SWDIR/samtabix
+cd $SWDIR/samtabix
 make
 
 #git clone git://genome-source.cse.ucsc.edu/kent.git
-git clone https://github.com/ucscGenomeBrowser/kent ~/software/kent
-cd ~/software/kent
+git clone https://github.com/ucscGenomeBrowser/kent $SWDIR/kent
+cd $SWDIR/kent
 git checkout -t -b beta origin/beta
 git pull
 sed -i 's/hgBeacon//g' ~/software/kent/src/hg/makefile
