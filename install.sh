@@ -6,6 +6,8 @@
 
 
 
+
+
 ######################
 ### INIT #############
 ######################
@@ -16,6 +18,31 @@ source ~/.bashrc
 ln -s $SCRIPTDIR/.hg.conf ~/.hg.conf
 chmod 600 ~/.hg.conf
 cp $SCRIPTDIR/my.cnf /etc/my.cnf
+
+
+######################
+### DOCKER ###########
+######################
+yum install -y man
+iptables -F
+
+yum install -y  mysql mysql-server httpd git mysql-devel.x86_64
+yum install -y gcc libpng-devel-1.5.13-5.el7.x86_64 libstdc++-*
+#libimobiledevice-devel.x86_64 libplist-devel.x86_64 usbmuxd-devel.x86_64 
+
+######################
+### DEBIAN ###########
+######################
+
+apt-get update -y
+apt-get install -y wget apache2 mysql-server git libpng++-dev gcc libc++-dev libstdc++-4.9-dev
+
+ln -s /var/www /usr/local/apache
+ln -s /var/www /var/www/html
+ln -s /var/www /var/www/htdocs
+ln -s /var/www/cgi-bin /usr/lib/cgi-bin
+ln -s /var/www/cgi-bin /var/www/cgi-bin-dlv04c
+
 
 ######################
 ### NETWORK ##########
@@ -32,12 +59,12 @@ echo 0 > /selinux/enforce
 ### DEPENDENCIES #####
 ######################
 
-yum update
-yum -y install wget
-wget -O - wget http://download.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm | rpm -ivh -
-yum update
-yum -y install hg wget mysql mysql-server httpd git mysql-devel.x86_64 libimobiledevice-devel.x86_64 libplist-devel.x86_64 usbmuxd-devel.x86_64 gcc libpng*x86* libstdc++-* tcsh R vim nano
-yum update
+yum update -y 
+yum install -y wget
+wget -O- http://download.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm | rpm -ivh -
+yum update -y
+yum -y install httpd mysql mysql-server httpd git mysql-devel.x86_64 libimobiledevice-devel.x86_64 libplist-devel.x86_64 usbmuxd-devel.x86_64 gcc libpng*x86* libstdc++-* tcsh R vim nano
+yum -y update
 
 ######################
 ### SYMLINKS #########
