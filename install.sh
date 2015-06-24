@@ -37,21 +37,21 @@ yum install -y gcc libpng-devel-1.5.13-5.el7.x86_64 libstdc++-*
 apt-get update -y
 apt-get install -y wget apache2 mysql-server git libpng++-dev gcc libc++-dev libstdc++-4.9-dev make libssl-dev libmysqlclient-dev
 
-ln -s /var/www /usr/local/apache
-ln -s /var/www /var/www/html
-ln -s /var/www /var/www/htdocs
-ln -s /var/www/cgi-bin /usr/lib/cgi-bin
-ln -s /var/www/cgi-bin /var/www/cgi-bin-
-ln -s /var/www/cgi-bin /var/www/cgi-bin-root
+ln -s $WEBROOT /usr/local/apache
+ln -s $WEBROOT $WEBROOT/html
+ln -s $WEBROOT $WEBROOT/htdocs
+ln -s $CGI_BIN /usr/lib/cgi-bin
+ln -s $CGI_BIN $WEBROOT/cgi-bin-$USER
+ln -s $CGI_BIN $WEBROOT/cgi-bin-root
 
 rsync -avzP rsync://hgdownload.cse.ucsc.edu/cgi-bin/ $CGI_BIN
 rsync -avzP rsync://hgdownload.cse.ucsc.edu/htdocs/ $WEBROOT/
 
-rm /var/www/trash
-mkdir /var/www/trash
-chmod 777 /var/www/trash
-chown -R www-data:www-data /var/www
-chown -R 755 /var/www
+rm $WEBROOT/trash
+mkdir $WEBROOT/trash
+chmod 777 $WEBROOT/trash
+chown -R www-data:www-data $WEBROOT
+chown -R 755 $WEBROOT
 
 mkdir -p $SWDIR
 ln -s $SWDIR ~/software
@@ -65,7 +65,7 @@ git clone https://github.com/ucscGenomeBrowser/kent $SWDIR/kent
 cd $SWDIR/kent
 git checkout -t -b beta origin/beta
 git pull
-sed -i 's/hgBeacon//g' ~/software/kent/src/hg/makefile
+sed -i 's/hgBeacon//g' $SWDIR/kent/src/hg/makefile
 cd src
 make clean
 make cgi
@@ -97,11 +97,12 @@ yum -y update
 ### SYMLINKS #########
 ######################
 
-ln -s /var/www /usr/local/apache
-ln -s /var/www /var/www/html
-ln -s /var/www /var/www/htdocs
-ln -s /var/www/cgi-bin /usr/lib/cgi-bin
-ln -s /var/www/cgi-bin /var/www/cgi-bin-dlv04c
+ln -s $WEBROOT /usr/local/apache
+ln -s $WEBROOT $WEBROOT/html
+ln -s $WEBROOT $WEBROOT/htdocs
+ln -s $CGI_BIN /usr/lib/cgi-bin
+ln -s $CGI_BIN $WEBROOT/cgi-bin-$USER
+ln -s $CGI_BIN $WEBROOT/cgi-bin-root
 
 ######################
 ### APACHE ###########
@@ -124,11 +125,11 @@ service httpd restart
 rsync -avzP rsync://hgdownload.cse.ucsc.edu/cgi-bin/ $CGI_BIN
 rsync -avzP rsync://hgdownload.cse.ucsc.edu/htdocs/ $WEBROOT/
 
-rm /var/www/trash
-mkdir /var/www/trash
-chmod 777 /var/www/trash
-chown -R apache:apache /var/www
-chown -R 755 /var/www
+rm $WEBROOT/trash
+mkdir$WEBROOT/trash
+chmod 777$WEBROOT/trash
+chown -R apache:apache $WEBROOT
+chown -R 755 $WEBROOT
 
 ######################
 ### SOURCE ###########
@@ -147,26 +148,28 @@ git clone https://github.com/ucscGenomeBrowser/kent $SWDIR/kent
 cd $SWDIR/kent
 git checkout -t -b beta origin/beta
 git pull
-sed -i 's/hgBeacon//g' ~/software/kent/src/hg/makefile
+sed -i 's/hgBeacon//g' $SWDIR/kent/src/hg/makefile
 cd src
 make clean
 make
 
-cp ~/software/kent/src/webBlat/webBlat /var/www/cgi-bin/
-cp ~/software/kent/src/webBlat/webBlat.cfg /var/www/cgi-bin/
+rm -f $CGI_BIN/webBlat
+cp -f $SWDIR/kent/src/webBlat/webBlat $CGI_BIN
+rm -f $CGI_BIN/webBlat.cfg
+cp -f $SWDIR/kent/src/webBlat/webBlat.cfg $CGI_BIN
 
 ######################
 ### HG.CONF ##########
 ######################
 
-cp ~/software/kent/src/product/ex.hg.conf /var/www/cgi-bin/hg.conf
-sed -i 's/defaultGenome=.*/defaultGenome='"$DEFAULTGENOME"'/g' /var/www/cgi-bin/hg.conf
-sed -i 's/wiki\.host=.*/wiki\.host='"$HOST"'/g' /var/www/cgi-bin/hg.conf
-sed -i 's/login\.browserName=.*/login\.browserName='"$BROWSERNAME"'/g' /var/www/cgi-bin/hg.conf
-sed -i 's/login\.browserAddr=.*/login\.browserAddr=http:\/\/'"$HOST"'/g' /var/www/cgi-bin/hg.conf
-sed -i 's/login\.mailSignature=Greenome Browser Staff=.*/login\.mailSignature=Greenome Browser Staff/g' /var/www/cgi-bin/hg.conf
-sed -i 's/login\.mailReturnAddr=.*/login\.mailReturnAddr='"$EMAILADDRESS"'/g' /var/www/cgi-bin/hg.conf
-sed -i 's/custromTracks\.host=.*/custromTracks\.host=localhost/g' /var/www/cgi-bin/hg.conf
+cp $swdir/kent/src/product/ex.hg.conf $CGI_BIN/hg.conf
+sed -i 's/defaultGenome=.*/defaultGenome='"$DEFAULTGENOME"'/g' $CGI_BIN/hg.conf
+sed -i 's/wiki\.host=.*/wiki\.host='"$HOST"'/g' $CGI_BIN/hg.conf
+sed -i 's/login\.browserName=.*/login\.browserName='"$BROWSERNAME"'/g'$CGI_BIN/hg.conf
+sed -i 's/login\.browserAddr=.*/login\.browserAddr=http:\/\/'"$HOST"'/g' $CGI_BIN/hg.conf
+sed -i 's/login\.mailSignature=Greenome Browser Staff=.*/login\.mailSignature=Greenome Browser Staff/g' $CGI_BIN/hg.conf
+sed -i 's/login\.mailReturnAddr=.*/login\.mailReturnAddr='"$EMAILADDRESS"'/g' $CGI_BIN/hg.conf
+sed -i 's/custromTracks\.host=.*/custromTracks\.host=localhost/g' $CGI_BIN/hg.conf
 # PUT IN INFO FOR USER AND PASS HERE FOR CUSTOMTRACKS
 
 ######################
@@ -181,7 +184,7 @@ $MYSQL -e "create database hgFixed"
 $MYSQL -e "create database hgcentral"
 $MYSQL -e "create database customTrash"
 $MYSQL hgcentral < $MYSQLDATA/hgcentral.sql
-chmod -R 755 /var/lib/mysql/
+chmod -R 755 $MYSQLDATA
 service mysqld restart
 
 ${MYSQL} -e "GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, ALTER, CREATE TEMPORARY TABLES on hgcentral.* TO browser@localhost IDENTIFIED BY 'genome';" mysql
