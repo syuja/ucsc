@@ -170,6 +170,11 @@ sed -i 's/login\.browserAddr=.*/login\.browserAddr=http:\/\/'"$HOST"'/g' $CGI_BI
 sed -i 's/login\.mailSignature=Greenome Browser Staff=.*/login\.mailSignature=Greenome Browser Staff/g' $CGI_BIN/hg.conf
 sed -i 's/login\.mailReturnAddr=.*/login\.mailReturnAddr='"$EMAILADDRESS"'/g' $CGI_BIN/hg.conf
 sed -i 's/custromTracks\.host=.*/custromTracks\.host=localhost/g' $CGI_BIN/hg.conf
+sed -i 's/customTracks\.host=.*/customTracks\.host=localhost/g' $CGI_BIN/hg.conf
+sed -i 's/customTracks\.user=.*/customTracks\.user=readwrite/g' $CGI_BIN/hg.conf
+sed -i 's/customTracks\.password=.*/customTracks\.password=update/g' $CGI_BIN/hg.conf
+sed -i 's/customTracks\.tmpdir=.*/customTracks\.tmpdir='"$WEBROOT"/trash/ct'/g' $CGI_BIN/hg.conf
+
 # PUT IN INFO FOR USER AND PASS HERE FOR CUSTOMTRACKS
 
 ######################
@@ -193,4 +198,4 @@ ${MYSQL} -e "GRANT FILE on *.* TO browser@localhost IDENTIFIED BY 'genome';" mys
 ${MYSQL} -e "GRANT SELECT on mysql.* TO browser@localhost IDENTIFIED BY 'genome';" mysql
 ${MYSQL} -e "GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, ALTER on hgcentral.* TO readwrite@localhost IDENTIFIED BY 'update';" mysql
 ${MYSQL} -e "FLUSH PRIVILEGES;"
-#${MYSQL} -e "GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,DROP,ALTER,INDEX" on customTrash.* TO ctdbuser@yourWebHost IDENTIFIED by 'ctdbpasswd';" mysql
+${MYSQL} -e "GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,DROP,ALTER,INDEX on customTrash.* TO readwrite@localhost IDENTIFIED by 'update';" mysql
