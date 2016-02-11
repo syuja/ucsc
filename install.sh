@@ -33,7 +33,7 @@ yum install -y  mysql mysql-server httpd git mysql-devel.x86_64
 yum install -y mariadb-server.x86_64 httpd git mariadb-devel.x86_64
 
 yum install -y gcc libpng-devel-1.5.13-5.el7.x86_64 libstdc++-* make
-#libimobiledevice-devel.x86_64 libplist-devel.x86_64 usbmuxd-devel.x86_64 
+#libimobiledevice-devel.x86_64 libplist-devel.x86_64 usbmuxd-devel.x86_64
 
 ######################
 ### DEBIAN ###########
@@ -96,7 +96,7 @@ echo 0 > /selinux/enforce
 ### DEPENDENCIES #####
 ######################
 
-yum update -y 
+yum update -y
 yum install -y wget
 
 
@@ -197,7 +197,7 @@ sed -i 's/custromTracks\.host=.*/custromTracks\.host=localhost/g' $CGI_BIN/hg.co
 sed -i 's/customTracks\.host=.*/customTracks\.host=localhost/g' $CGI_BIN/hg.conf
 sed -i 's/customTracks\.user=.*/customTracks\.user=readwrite/g' $CGI_BIN/hg.conf
 sed -i 's/customTracks\.password=.*/customTracks\.password=update/g' $CGI_BIN/hg.conf
-sed -i 's/customTracks\.tmpdir=.*/customTracks\.tmpdir='"$WEBROOT/trash/ct"'/g' $CGI_BIN/hg.conf
+sed -i 's#customTracks\.tmpdir=.*#customTracks\.tmpdir='$WEBROOT/trash/ct'#g' $CGI_BIN/hg.conf
 
 # PUT IN INFO FOR USER AND PASS HERE FOR CUSTOMTRACKS
 
@@ -205,8 +205,9 @@ sed -i 's/customTracks\.tmpdir=.*/customTracks\.tmpdir='"$WEBROOT/trash/ct"'/g' 
 ### MYSQL ############
 ######################
 
+rm -f /etc/my.cnf
 cp $SCRIPTDIR/my.cnf /etc/my.cnf
-service mysqld restart
+service mysqld restart # not on docker
 mysqladmin -u $SQL_USER password $SQL_PASSWORD
 wget -O $MYSQLDATA/hgcentral.sql http://hgdownload.cse.ucsc.edu/admin/hgcentral.sql
 $MYSQL -e "create database hgFixed"
