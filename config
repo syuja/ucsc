@@ -1,13 +1,13 @@
 # change these
-export GBDIR="/lustre/gbdb"
-export SWDIR="/lustre/software"
-export HOST='example.com'
-export DEFAULTGENOME='Z. mays'
-export BROWSERNAME='greenome browser'
+export GBDIR="/vault/gbdb"
+export SWDIR="/vault/software"
+export HOST='localhost'
+export DEFAULTGENOME='test'
+export BROWSERNAME='ucsc'
 export SQL_USER="root"
 export SQL_PASSWORD="genome"
-export ADMIN="dlv04c"
-export EMAILADDRESS="vera@genomics.fsu.edu"
+export ADMIN="root"
+export EMAILADDRESS="user@host.com"
 
 # usually doesn't need changing
 export WEBROOT=/var/www
