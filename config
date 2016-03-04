@@ -1,7 +1,7 @@
 # change these
 export GBDIR="/vault/gbdb"
 export SWDIR="/vault/software"
-export HOST='localhost'
+export HOST='apple.com' #PUT FQDN HERE
 export DEFAULTGENOME='test'
 export BROWSERNAME='ucsc'
 export SQL_USER="root"
