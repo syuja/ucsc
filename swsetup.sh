@@ -15,6 +15,3 @@ git checkout -t -b beta origin/beta
 git pull
 sed -i 's/hgBeacon//g' $SWDIR/kent/src/hg/makefile
 sed -i 's/hgMirror//g' $SWDIR/kent/src/hg/makefile #hgMirror makefile breaks cgi make - -${USER} issue
-cd src
-make clean
-make
