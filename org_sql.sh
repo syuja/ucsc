@@ -55,7 +55,7 @@ hgTrackDb $GBDIR/$db $db trackDb $SWDIR/kent/src/hg/lib/trackDb.sql $GBDIR/$db
 echo "creating hgFindSpec table"
 hgFindSpec $GBDIR/$db $db hgFindSpec $SWDIR/kent/src/hg/lib/hgFindSpec.sql $GBDIR/$db
 
-echo "setting mysql permissions"
+echo "setting mysql permissions" # make more restrictive. see http://genomewiki.ucsc.edu/index.php/Browser_Installation
 $MYSQL -e "GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, ALTER, CREATE TEMPORARY TABLES on $db.* TO browser@localhost IDENTIFIED BY 'genome';"
 $MYSQL -e "GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, ALTER, CREATE TEMPORARY TABLES on hgcentral.* TO browser@localhost IDENTIFIED BY 'genome';"
 $MYSQL -e "GRANT FILE on *.* TO browser@localhost IDENTIFIED BY 'genome';"

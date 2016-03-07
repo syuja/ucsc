@@ -17,12 +17,6 @@ yum install -y \
 
 
 
-
-yum install -y \
- mariadb-server.x86_64 \
- mariadb-devel.x86_64
-
-
 # git \ #not if precompiled in gbdb?
 #libpng*x86* \
 #libstdc++-* \
