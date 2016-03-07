@@ -2,9 +2,9 @@ docker run -v /vault:/vault -p 80:80 -it centos:7 bash # copy config or add to v
 
 #source config
 
-yuminstall.sh
+web_yum.sh
 
-websetup.sh
+web_setup.sh
 
 kentBuild.sh
 
