@@ -13,7 +13,10 @@ yum install -y \
  gcc \
  libstdc++-devel.x86_64 \
  libstdc++-static.x86_64 \
- make
+ make \
+ openssl-static.x86_64 \
+ mariadb-devel.x86_64
+
 
 
 

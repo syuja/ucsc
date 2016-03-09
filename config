@@ -1,20 +1,26 @@
-# change these
-export GBDIR="/vault/gbdb"
-export SWDIR="/vault/software"
+# PERSISTENT DATA LOCATIONS
+export     GBDIR=/vault/gbdb
+export     SWDIR=/vault/software
+export MYSQLDATA=/vault/w22/mysql
+export   WEBROOT=/vault/w22
+
+# HOST INFO
 export WEBHOST='chrom1.bio.fsu.edu' #PUT FQDN HERE
 export SQLHOST='localhost' #PUT FQDN HERE
+
+# BROWSER SETTINGS
 export DEFAULTGENOME='Z. mays'
-export BROWSERNAME='ucsc'
-export SQL_USER="root"
+export   BROWSERNAME='ucsc'
+
+# ACCOUNTS
+export     SQL_USER="root"
 export SQL_PASSWORD="genome"
-export ADMIN="root"
+export        ADMIN="root"
 export EMAILADDRESS="user@host.com"
-export MYSQLDATA="/vault/gbdb/mysqldev"
 
 
 # usually doesn't need changing
-export WEBROOT=/var/www
-export CGI_BIN=/var/www/cgi-bin
+export CGI_BIN=${WEBROOT}/cgi-bin
 export MACHTYPE='x86_64'
 export MySQL_USER=${SQL_USER}
 export MYSQL="mysql -u${MySQL_USER} -p${SQL_PASSWORD}"

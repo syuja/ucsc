@@ -6,9 +6,9 @@ web_yum.sh
 
 web_setup.sh
 
-kentBuild.sh
+web_kent.sh
 
-hgconf.sh
+web_hgconf.sh
 
 sql_update_path.sh
 

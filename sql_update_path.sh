@@ -17,7 +17,7 @@ echo -e '[mysqld]\n'\
 #'loose-local-infile=1'
 
 rmdir /var/lib/mysql
-ln -s $MYSQLDATA /var/lib/mysql #shouldnt need this, why is is looking for socket here?
+ln -s $MYSQLDATA /var/lib/mysql #shouldnt need this, why is is looking for socket here? look in hg.conf
 mkdir /var/run/mysqld
 chown -R mysql:mysql /var/run/mysqld
 chown -R mysql:mysql $MYSQLDATA
