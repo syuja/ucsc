@@ -10,10 +10,10 @@ web_kent.sh
 
 web_hgconf.sh
 
-sql_update_path.sh
+#sql_update_path.sh
 
 #sql_create.sh
 
-sql_perms.sh
+#sql_perms.sh
 
 ln -s $GBDIR /gbdb #only for w22 which points to files in /gbdb

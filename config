@@ -1,12 +1,13 @@
 # PERSISTENT DATA LOCATIONS
 export     GBDIR=/vault/gbdb
 export     SWDIR=/vault/software
-export MYSQLDATA=/vault/w22/mysql
-export   WEBROOT=/vault/w22
+export MYSQLDATA=/vault/gbtest/mysql
+export   WEBROOT=/vault/gbtest/www
 
 # HOST INFO
-export WEBHOST='chrom1.bio.fsu.edu' #PUT FQDN HERE
-export SQLHOST='localhost' #PUT FQDN HERE
+export  DOMAIN='bioroute.pw'
+#export WEBHOST='chrom1.bio.fsu.edu' #PUT FQDN HERE
+export SQLHOST='t1500' #PUT FQDN HERE
 
 # BROWSER SETTINGS
 export DEFAULTGENOME='Z. mays'
@@ -18,6 +19,8 @@ export SQL_PASSWORD="genome"
 export        ADMIN="root"
 export EMAILADDRESS="user@host.com"
 
+#############################################
+#############################################
 
 # usually doesn't need changing
 export CGI_BIN=${WEBROOT}/cgi-bin

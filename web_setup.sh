@@ -15,11 +15,12 @@
 
 
 
-echo -e 'db.host='${HOST}'\ndb.user='$SQL_USER'\ndb.password='$SQL_PASSWORD > $HOME/.hg.conf && chmod 600 $HOME/.hg.conf
+echo -e 'db.host='${SQLHOST}'\ndb.user='$SQL_USER'\ndb.password='$SQL_PASSWORD > $HOME/.hg.conf && chmod 600 $HOME/.hg.conf
 chmod 600 ~/.hg.conf
 
-ln -s $WEBROOT /usr/local/apache # not needed anymore after docRoot fixed in hg.conf?
-rmdir $WEBROOT/html
+mkdir -p $WEBROOT
+#ln -s $WEBROOT /usr/local/apache # not needed anymore after docRoot fixed in hg.conf?
+rmdir $WEBROOT/html || :
 ln -s $WEBROOT $WEBROOT/html
 ln -s $WEBROOT $WEBROOT/htdocs
 ln -s $CGI_BIN /usr/lib/cgi-bin
@@ -40,7 +41,7 @@ chown -R 755 $WEBROOT
 
 
 ### APACHE
-sed -i 's/^DocumentRoot.*/DocumentRoot "\/var\/www\"/g' /etc/httpd/conf/httpd.conf # replace path here with $WEBROOT
+sed -i 's#^DocumentRoot.*#DocumentRoot "'"$WEBROOT"'"#g' /etc/httpd/conf/httpd.conf # replace path here with $WEBROOT
 # activate xbithack
 echo -e 'XBitHack on\n'\
 '<Directory '$WEBROOT'/>\n'\

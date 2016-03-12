@@ -1,4 +1,8 @@
+mkdir -p $MYSQLDATA
+chown mysql:mysql $MYSQLDATA
+
 mysqladmin -u $SQL_USER password $SQL_PASSWORD
+
 
 $MYSQL -e "create database hgFixed"
 $MYSQL -e "create database hgcentral"
