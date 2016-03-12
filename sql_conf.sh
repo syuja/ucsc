@@ -9,7 +9,6 @@ echo -e '[mysqld]\n'\
 'symbolic-links         =1\n'\
 'loose-local-infile     =1\n'\
 'default-storage-engine =MYISAM\n'\
-'bind-address           =0.0.0.0\n'\
 '[mysqld_safe]\n'\
 'log-error              =/var/log/mysqld.log\n'\
 'pid-file               =/var/run/mysqld/mysqld.pid\n'\
@@ -19,8 +18,6 @@ echo -e '[mysqld]\n'\
 
 rmdir /var/lib/mysql
 ln -s $MYSQLDATA /var/lib/mysql #shouldnt need this, why is is looking for socket here? look in hg.conf
-
-
 
 mkdir /var/run/mysqld
 chown -R mysql:mysql /var/run/mysqld

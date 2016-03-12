@@ -2,7 +2,12 @@
 ### HG.CONF ##########
 ######################
 
-cp -f $SWDIR/kent/src/product/ex.hg.conf $CGI_BIN/hg.conf
+echo -e 'db.host='${SQLHOST}'\ndb.user='$SQL_USER'\ndb.password='$SQL_PASSWORD > $HOME/.hg.conf && chmod 600 $HOME/.hg.conf
+chmod 600 ~/.hg.conf
+
+
+
+rm -f $CGI_BIN/hg.conf && cp -f $SWDIR/kent/src/product/ex.hg.conf $CGI_BIN/hg.conf
 
 # set default genome
 sed -i 's/defaultGenome=.*/defaultGenome='"$DEFAULTGENOME"'/g' $CGI_BIN/hg.conf

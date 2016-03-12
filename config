@@ -1,13 +1,12 @@
 # PERSISTENT DATA LOCATIONS
 export     GBDIR=/vault/gbdb
 export     SWDIR=/vault/software
-export MYSQLDATA=/vault/gbtest/mysql
-export   WEBROOT=/vault/gbtest/www
+export BROWSERDIR=/vault/gbtest
 
 # HOST INFO
 export  DOMAIN='bioroute.pw'
 #export WEBHOST='chrom1.bio.fsu.edu' #PUT FQDN HERE
-export SQLHOST='t1500' #PUT FQDN HERE
+export SQLHOST='t1500.bioroute.pw' #PUT FQDN HERE
 
 # BROWSER SETTINGS
 export DEFAULTGENOME='Z. mays'
@@ -23,6 +22,8 @@ export EMAILADDRESS="user@host.com"
 #############################################
 
 # usually doesn't need changing
+export MYSQLDATA=$BROWSERDIR/mysql
+export   WEBROOT=$BROWSERDIR/www
 export CGI_BIN=${WEBROOT}/cgi-bin
 export MACHTYPE='x86_64'
 export MySQL_USER=${SQL_USER}
@@ -30,6 +31,7 @@ export MYSQL="mysql -u${MySQL_USER} -p${SQL_PASSWORD}"
 export USE_SSL=1
 export USE_SAMTABIX=1
 export SAMTABIXDIR="$SWDIR/samtabix/"
+
 
 # add bins to path
 export PATH=$SWDIR:$PATH
