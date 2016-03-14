@@ -1,21 +1,6 @@
-docker run -v /vault:/vault -p 80:80 -it centos:7 bash # copy config or add to vault for access
+docker run -h $HOSTNAME -v /vault:/vault -p 80:80 -it centos:7 bash
 
-#source config
-
-web_yum.sh
-
-#web_setup.sh
-
-#web_kent.sh
-
+#!/bin/bash
+web_init.sh
 web_hgconf.sh
-
-web_conf.sh
-
-#sql_update_path.sh
-
-#sql_create.sh
-
-#sql_perms.sh
-
-ln -s $GBDIR /gbdb #only for w22 which points to files in /gbdb
+ln -s $GBDIR /gbdb

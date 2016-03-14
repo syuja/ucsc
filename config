@@ -17,20 +17,22 @@ export     SQL_USER="root"
 export SQL_PASSWORD="genome"
 export        ADMIN="root"
 export EMAILADDRESS="user@host.com"
+export WIKIEMAIL=NOEMAIL
 
 #############################################
 #############################################
 
 # usually doesn't need changing
-export MYSQLDATA=$BROWSERDIR/mysql
-export   WEBROOT=$BROWSERDIR/www
-export CGI_BIN=${WEBROOT}/cgi-bin
-export MACHTYPE='x86_64'
-export MySQL_USER=${SQL_USER}
-export MYSQL="mysql -u${MySQL_USER} -p${SQL_PASSWORD}"
-export USE_SSL=1
+export    MYSQLDATA=$BROWSERDIR/mysql
+export      WEBROOT=$BROWSERDIR/www
+export      CGI_BIN=${WEBROOT}/cgi-bin
+export     MACHTYPE='x86_64'
+export   MySQL_USER=${SQL_USER}
+export        MYSQL="mysql -u${MySQL_USER} -p${SQL_PASSWORD}"
+export      USE_SSL=1
 export USE_SAMTABIX=1
-export SAMTABIXDIR="$SWDIR/samtabix/"
+export  SAMTABIXDIR="$SWDIR/samtabix/"
+export HGCONF=$CGI_BIN/hg.conf
 
 
 # add bins to path

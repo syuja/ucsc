@@ -1,3 +1,16 @@
+yum update -y
+
+yum install -y \
+rsync \
+tcsh \
+gcc \
+libstdc++-devel.x86_64 \
+libstdc++-static.x86_64 \
+make \
+perl \
+git
+
+
 #make software directory
 mkdir -p $SWDIR
 mkdir -p $SWDIR/bin/$MACHTYPE
