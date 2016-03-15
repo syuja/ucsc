@@ -14,10 +14,11 @@ echo "making genome directory"
 mkdir -p /gbdb/$name/bbi
 mkdir -p /gbdb/$name/html
 
-echo "$(wc -l /gbdb/$name/chromInfo.tab | awk '{print $1}') scaffolds found"
+#echo "$(wc -l /gbdb/$name/chromInfo.tab | awk '{print $1}') scaffolds found"
 
-echo "adding ideogram track configuration"
-echo -e "track cytoBandIdeo\nshortLabel Chromosome Band (Ideogram)\nlongLabel Ideogram for Orientation\ngroup map\nvisibility dense\ntype bed 4 +" >> $GBDIR/$db/trackDb.ra
+#echo "adding ideogram track configuration"
+echo -e "track cytoBandIdeo\nshortLabel Chromosome Band (Ideogram)\nlongLabel Ideogram for Orientation\ngroup map\nvisibility dense\ntype bed 4 +" >> $GBDIR/$name/trackDb.ra
 
-cat $db.chroms | awk '{print $1"\t"0"\t"$2"\t""\t""gneg"}' > $db.cytoBand
+cat $GBDIR/$name/genome.chrom.sizes | awk '{print $1"\t"0"\t"$2"\t""\t""gneg"}' > cytoband.bed
+
 bedSort $db.cytoBand $db.cytoBand
