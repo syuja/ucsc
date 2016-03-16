@@ -9,7 +9,8 @@ yum install -y \
  libplist-devel.x86_64 \
  libpng-devel.x86_64 \
  openssl-static.x86_64 \
- mariadb-devel.x86_64
+ mariadb-devel.x86_64 \
+ ghostscript
 
 
 ### APACHE

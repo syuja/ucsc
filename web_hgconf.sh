@@ -23,7 +23,7 @@ sed -i 's/login\.browserAddr=.*/login\.browserAddr=http:\/\/'"$HOST"'/g' $HGCONF
 sed -i 's/login\.mailSignature=Greenome Browser Staff=.*/login\.mailSignature=Greenome Browser Staff/g' $HGCONF
 sed -i 's/login\.mailReturnAddr=.*/login\.mailReturnAddr='"$WIKIEMAIL"'/g' $HGCONF
 sed -i 's/custromTracks\.host=.*/custromTracks\.host=localhost/g' $HGCONF
-sed -i 's/customTracks\.host=.*/customTracks\.host=localhost/g' $HGCONF
+sed -i 's/customTracks\.host=.*/customTracks\.host='"$SQLHOST"'/g' $HGCONF
 sed -i 's/customTracks\.user=.*/customTracks\.user=readwrite/g' $HGCONF
 sed -i 's/customTracks\.password=.*/customTracks\.password=update/g' $HGCONF
 sed -i 's#customTracks\.tmpdir=.*#customTracks\.tmpdir='$WEBROOT/trash/ct'#g' $HGCONF
