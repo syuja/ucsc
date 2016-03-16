@@ -1,4 +1,5 @@
-$name=zeaMay3
+# RUN THIS ON THE MYSQL SERVER
+
 assembly="AGPv3"
 name="Z. mays"
 taxonomic_id="12345"
@@ -42,11 +43,12 @@ $MYSQL $name < $SWDIR/kent/src/hg/lib/gap.sql
 
 #$SWDIR/kent/src/utils/qa/makeCytoBandIdeo.csh $name
 
+$MYSQL -e "load data local infile \""$GBDIR/$name/chromInfo.tab"\" into table chromInfo;" $name
 
 #echo "creating ideogram track"
 hgsql $name -e "load data local infile \""$GBDIR/$name/chromInfo.tab"\" into table chromInfo;"
-#hgsql -N -e 'SELECT chrom, size FROM chromInfo' $name > $GBDIR/$name/chromInfo.tab
-hgLoadSqlTab $name cytoBandIdeo $SWDIR/kent/src/hg/lib/cytoBandIdeo.sql $GBDBDIR/$name/cytoband.bed
+hgsql -N -e 'SELECT chrom, size FROM chromInfo' $name > $GBDIR/$name/chromInfo.tab
+hgLoadSqlTab $name cytoBandIdeo $SWDIR/kent/src/hg/lib/cytoBandIdeo.sql $GBDIR/$name/cytoband.bed
 
 #echo "loading track configuration in database"
 hgTrackDb $GBDIR/$name $name trackDb $SWDIR/kent/src/hg/lib/trackDb.sql $GBDIR/$name
