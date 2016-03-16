@@ -1,22 +1,22 @@
 # PERSISTENT DATA LOCATIONS
 export     GBDIR=/vault/gbdb
 export     SWDIR=/vault/software
-export BROWSERDIR=/vault/gbtest
+export BROWSERDIR=/vault/gbtest2
 
 # HOST INFO
 export  DOMAIN='bioroute.pw'
 #export WEBHOST='chrom1.bio.fsu.edu' #PUT FQDN HERE
-export SQLHOST='t1500.bioroute.pw' #PUT FQDN HERE
+export SQLHOST='msc3.bioroute.pw' #PUT FQDN HERE
 
 # BROWSER SETTINGS
-export DEFAULTGENOME='Z. mays'
-export   BROWSERNAME='ucsc'
+export DEFAULTGENOME='Maize'
+export   BROWSERNAME='The Greenome Browser'
 
 # ACCOUNTS
 export     SQL_USER="root"
 export SQL_PASSWORD="genome"
 export        ADMIN="root"
-export EMAILADDRESS="user@host.com"
+export EMAILADDRESS="vera@genomics.fsu.edu"
 export WIKIEMAIL=NOEMAIL
 
 #############################################

@@ -3,4 +3,4 @@ docker run -h $HOSTNAME -v /vault:/vault -p 3306:3306 -it centos:7 bash # copy c
 #source config
 sql_yum.sh
 sql_conf.sh
-sql_perms.sh
+nsf_sql_perms.sh

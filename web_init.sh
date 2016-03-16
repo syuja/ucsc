@@ -10,12 +10,12 @@ yum install -y \
  libpng-devel.x86_64 \
  openssl-static.x86_64 \
  mariadb-devel.x86_64 \
- ghostscript
+ ghostscript \
+ mariadb-server.x86_64 # for mysql executable
 
-
-### APACHE
 pkill httpd
 rm -fr /var/www
+mkdir -p $WEBROOT
 ln -s $WEBROOT /var/www
 
 
@@ -25,6 +25,9 @@ echo -e 'XBitHack on\n'\
 '<Directory /var/www/>\n'\
 'Options +Includes\n'\
 '</Directory>' >> /etc/httpd/conf/httpd.conf
+
+
+### APACHE
 
 
 /usr/sbin/apachectl

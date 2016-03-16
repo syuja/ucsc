@@ -1,3 +1,5 @@
+# RUN ON WEB SERVER
+
 cd $SWDIR/kent/src
 make clean
 make
