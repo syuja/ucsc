@@ -2,7 +2,8 @@
 
 cd $SWDIR/kent/src
 make clean
-make
+make cgi
+make blatSuite
 
 #post-build tasks
 rm -f $CGI_BIN/webBlat

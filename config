@@ -1,23 +1,31 @@
+# PROCEDURE
+# launch an admin container and run nfs_init.sh
+# launch an admin container and run ugb_init.sh
+# launch a  mysql container
+# launch a    web container
+
+# HGCGDID="1KzkbiLoeGl9GO-CaBRnjVQb-t4GcQqCo-Y195i5ibVI"
+
 # PERSISTENT DATA LOCATIONS
-export     GBDIR=/vault/gbdb
-export     SWDIR=/vault/software
-export BROWSERDIR=/vault/gbtest2
+export     GBDIR=/vault/gbdb       #location to store track and genome data
+export     SWDIR=/vault/software   #location to store software
+export BROWSERDIR=/vault/gbtest2   #location to store browser html and database
 
 # HOST INFO
-export  DOMAIN='bioroute.pw'
-#export WEBHOST='chrom1.bio.fsu.edu' #PUT FQDN HERE
-export SQLHOST='msc3.bioroute.pw' #PUT FQDN HERE
+export        DOMAIN=$(dnsdomainname)
+export       SQLHOST="msc4"
 
 # BROWSER SETTINGS
-export DEFAULTGENOME='Maize'
-export   BROWSERNAME='The Greenome Browser'
+export DEFAULTGENOME="Maize"
+export   BROWSERNAME="The Greenome Browser"
 
-# ACCOUNTS
+# MISC
+export    WIKIEMAIL="NOEMAIL"
+export EMAILADDRESS="vera@genomics.fsu.edu"
+
+# MYSQL ACCOUNTS
 export     SQL_USER="root"
 export SQL_PASSWORD="genome"
-export        ADMIN="root"
-export EMAILADDRESS="vera@genomics.fsu.edu"
-export WIKIEMAIL=NOEMAIL
 
 #############################################
 #############################################

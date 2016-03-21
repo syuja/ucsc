@@ -1,23 +1,12 @@
-yum update -y
-
-yum install -y \
-rsync \
-tcsh \
-gcc \
-libstdc++-devel.x86_64 \
-libstdc++-static.x86_64 \
-make \
-perl \
-git
-
+#run from an admin node
 
 #make software directory
 mkdir -p $SWDIR
 mkdir -p $SWDIR/bin/$MACHTYPE
-ln -s $SWDIR/bin ~/bin
+
 
 #grab and compile samtabix
-git clone http://genome-source.cse.ucsc.edu/samtabix.git $SWDIR/samtabix
+git clone https://github.com/ucscGenomeBrowser/kent $SWDIR/samtabix
 cd $SWDIR/samtabix
 make
 
@@ -28,3 +17,6 @@ git checkout -t -b beta origin/beta
 git pull
 sed -i 's/hgBeacon//g' $SWDIR/kent/src/hg/makefile
 sed -i 's/hgMirror//g' $SWDIR/kent/src/hg/makefile #hgMirror makefile breaks cgi make - -${USER} issue
+
+cd $SWDIR/kent/src
+make utils
