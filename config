@@ -4,7 +4,8 @@
 # launch a  mysql container
 # launch a    web container
 
-# HGCGDID="1KzkbiLoeGl9GO-CaBRnjVQb-t4GcQqCo-Y195i5ibVI"
+# DBDBID="1ilMW4gv8XsECFuKpSlOFWVhO_04qiogVdQHYYxQF2ZM"
+
 
 # PERSISTENT DATA LOCATIONS
 export     GBDIR=/vault/gbdb       #location to store track and genome data
