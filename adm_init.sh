@@ -18,3 +18,6 @@ mariadb-devel.x86_64 \
 mariadb-server.x86_64 # for mysql executable
 
 ln -s $SWDIR/bin ~/bin
+
+echo -e 'db.host='${SQLHOST}'\ndb.user='$SQL_USER'\ndb.password='$SQL_PASSWORD > $HOME/.hg.conf && chmod 600 $HOME/.hg.conf
+chmod 600 ~/.hg.conf

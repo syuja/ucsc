@@ -4,20 +4,20 @@
 # launch a  mysql container
 # launch a    web container
 
-# DBDBID="1ilMW4gv8XsECFuKpSlOFWVhO_04qiogVdQHYYxQF2ZM"
+DBDBID="1ilMW4gv8XsECFuKpSlOFWVhO_04qiogVdQHYYxQF2ZM"
 
 
 # PERSISTENT DATA LOCATIONS
 export     GBDIR=/vault/gbdb       #location to store track and genome data
 export     SWDIR=/vault/software   #location to store software
-export BROWSERDIR=/vault/gbtest2   #location to store browser html and database
+export BROWSERDIR=/vault/gbtest3   #location to store browser html and database
 
 # HOST INFO
 export        DOMAIN=$(dnsdomainname)
 export       SQLHOST="msc4"
 
 # BROWSER SETTINGS
-export DEFAULTGENOME="Maize"
+export DEFAULTGENOME="Zea mays B73"
 export   BROWSERNAME="The Greenome Browser"
 
 # MISC

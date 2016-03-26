@@ -4,6 +4,9 @@ docker run -h $HOSTNAME -v /vault:/vault -p 80:80 -it centos:7 bash
 
 yum update -y
 
+# ghostscript for pdf support
+# mariadb for mysql client (dev libraries necessary?)
+
 yum install -y \
  httpd \
  libimobiledevice-devel.x86_64 \
@@ -34,7 +37,6 @@ ln -s $GBDIR /gbdb || :
 ################################################################################
 ######### HG.CONF ##########
 ################################################################################
-
 
 echo -e 'db.host='${SQLHOST}'\ndb.user='$SQL_USER'\ndb.password='$SQL_PASSWORD > $HOME/.hg.conf && chmod 600 $HOME/.hg.conf
 chmod 600 ~/.hg.conf

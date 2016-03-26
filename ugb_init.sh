@@ -55,7 +55,9 @@ chmod -R 755 $MYSQLDATA #necessary?
 ######################
 
 # allow an admin node to do anything
-${MYSQL} -e "GRANT FILE,SELECT,INSERT,UPDATE,DELETE,CREATE,DROP,ALTER,CREATE TEMPORARY TABLES on *.* TO root@'%."$DOMAIN"' IDENTIFIED BY \'"$SQL_PASSWORD"\';" mysql
+${MYSQL} -e "GRANT ALL PRIVILEGES on *.* TO root@'%' IDENTIFIED BY \'"$SQL_PASSWORD"\' WITH GRANT OPTION;" mysql
+
+${MYSQL} -e "GRANT SELECT on hgFixed.* TO readonly@'%' IDENTIFIED BY 'access';" mysql
 
 # allow webserver to modify hgcentral and customTrash
 ${MYSQL} -e "GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,DROP,ALTER on hgcentral.* TO readwrite@'%."$DOMAIN"' IDENTIFIED BY 'update';" mysql
@@ -82,6 +84,11 @@ ln -s $CGI_BIN $WEBROOT/cgi-bin-root
 
 rsync --delete -az rsync://hgdownload.cse.ucsc.edu/cgi-bin/ $CGI_BIN
 rsync --delete -az rsync://hgdownload.cse.ucsc.edu/htdocs/ $WEBROOT/
+
+# get all html files in toplevel
+# directories we want:  admin cgi-bin FAQ
+
+
 
 # delete left toolbar from index
 sed -i '/<TABLE WIDTH="100%" BORDER=0 CELLPADDING=0 CELLSPACING=0>/,/<\/TD><\/TR><\/TABLE>/d' $WEBROOT/index.html
