@@ -5,7 +5,20 @@ hgsql -e "delete from hgcentral.blatServers"
 hgsql -e "delete from hgcentral.liftOverChain"
 hgsql -e "delete from hgcentral.targetDb"
 
-wget -qO- "https://spreadsheets.google.com/feeds/download/spreadsheets/Export?key="${DBDBID}"&hl=en&exportFormat=tsv" | tr -d "\r" > $BROWSERDIR/db.tsv
+wget -qO- "https://spreadsheets.google.com/feeds/download/spreadsheets/Export?key="${DBDBID}"&hl=en&exportFormat=tsv" | tr -d "\r" > $BROWSERDIR/db.tsv && echo "" >> $BROWSERDIR/db.tsv
+
+cols=$(head -n 1 $BROWSERDIR/db.tsv)
+tail -n+2 $BROWSERDIR/db.tsv | while IFS=$'\t' read -r $cols
+do
+  if [ "$summary" != "NA" ]; then
+    echo "<br> $summary <br><hr>" > $htmlPath
+  fi
+  if [ "$credits" != "NA" ]; then
+    echo "<h2>Credits</h2> $credits <hr>" >> $htmlPath
+  fi
+
+done
+
 
 awk -F '\t' -v header=name,description,nibPath,organism,defaultPos,active,orderKey,genome,scientificName,htmlPath,hgNearOk,hgPbOk,sourceName  '
 BEGIN {
