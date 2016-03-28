@@ -4,7 +4,7 @@
 # launch a  mysql container
 # launch a    web container
 
-DBDBID="1ilMW4gv8XsECFuKpSlOFWVhO_04qiogVdQHYYxQF2ZM"
+export DBDBID="1ilMW4gv8XsECFuKpSlOFWVhO_04qiogVdQHYYxQF2ZM"
 
 
 # PERSISTENT DATA LOCATIONS

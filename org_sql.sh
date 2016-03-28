@@ -24,7 +24,7 @@ assembly=$1
 
 >&2 echo "downloading db sheet"
 
-wget -qO- "https://spreadsheets.google.com/feeds/download/spreadsheets/Export?key="${DBDBID}"&hl=en&exportFormat=tsv" | tr -d "\r" > $BROWSERDIR/db.tsv && echo "" >> $BROWSERDIR/db.tsv
+wget -qO- "https://spreadsheets.google.com/feeds/download/spreadsheets/Export?key="$DBDBID"&hl=en&exportFormat=tsv" | tr -d "\r" > $BROWSERDIR/db.tsv && echo "" >> $BROWSERDIR/db.tsv
 
 >&2 echo "recreating assembly db"
 
@@ -109,7 +109,7 @@ do
     hgsql -e "FLUSH PRIVILEGES;"
 
     >&2 echo "loading track data"
-    
+
     cols=$(head -n 1 $GBDIR/$name/trackDb.tsv)
     tail -n+2 $GBDIR/$name/trackDb.tsv | while IFS=$'\t' read -r $cols
     do
@@ -127,9 +127,3 @@ do
 
   fi
 done
-
-
-
-#  if [ "$track" != 'track' ] && [ "$bigDataUrl" != 'NA' ]; then
-#  if [ "$track" != 'track' ]; then
-#  fi

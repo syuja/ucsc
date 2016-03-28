@@ -7,6 +7,11 @@ hgsql -e "delete from hgcentral.targetDb"
 
 wget -qO- "https://spreadsheets.google.com/feeds/download/spreadsheets/Export?key="${DBDBID}"&hl=en&exportFormat=tsv" | tr -d "\r" > $BROWSERDIR/db.tsv && echo "" >> $BROWSERDIR/db.tsv
 
+
+######################################
+##### make assembly html files #######
+######################################
+
 cols=$(head -n 1 $BROWSERDIR/db.tsv)
 tail -n+2 $BROWSERDIR/db.tsv | while IFS=$'\t' read -r $cols
 do
@@ -19,6 +24,9 @@ do
 
 done
 
+######################################
+####### make dbDb table  #############
+######################################
 
 awk -F '\t' -v header=name,description,nibPath,organism,defaultPos,active,orderKey,genome,scientificName,htmlPath,hgNearOk,hgPbOk,sourceName  '
 BEGIN {
@@ -36,45 +44,66 @@ BEGIN {
 hgsql -e "delete from hgcentral.dbDb"
 hgsql -e "load data local infile \"$BROWSERDIR/dbDb.tsv\" into table hgcentral.dbDb ignore 1 lines;"
 
+######################################
+####### make clade table  ############
+######################################
 
 
-awk -F '\t' -v clade="clade"  'NR==1 {for (i=1; i<=NF; i++){ix[$i]=i}; print "name","label","priority"} ;
-  NR>1  { if(!($ix[clade] in p)) {print $ix[clade], $ix[clade], NR; p[$ix[clade]]=$ix[clade] } }' OFS='\t' $BROWSERDIR/db.tsv > $BROWSERDIR/clade.tsv
+awk -F '\t' -v clade="clade"  '
+NR==1 {
+  for (i=1; i<=NF; i++){
+    ix[$i]=i
+  }
+  print "name","label","priority"}
+NR>1  {
+  if(!($ix[clade] in p)) {
+    print $ix[clade], $ix[clade], NR; p[$ix[clade]]=$ix[clade]
+  }
+}' OFS='\t' $BROWSERDIR/db.tsv > $BROWSERDIR/clade.tsv
 
-  hgsql -e "delete from hgcentral.clade"
-  hgsql -e "load data local infile \"$BROWSERDIR/clade.tsv\" into table hgcentral.clade ignore 1 lines;"
+hgsql -e "delete from hgcentral.clade"
+hgsql -e "load data local infile \"$BROWSERDIR/clade.tsv\" into table hgcentral.clade ignore 1 lines;"
 
-
-
-awk -F '\t' -v clade="clade"  -v organism="organism" 'NR==1 {for (i=1; i<=NF; i++){ix[$i]=i}; print "genome","clade","priority"} ;
-   NR>1  { if(!($ix[organism] in p)) {print $ix[organism], $ix[clade], NR; p[$ix[organism]]=$ix[organism] } }' OFS='\t' $BROWSERDIR/db.tsv > $BROWSERDIR/genomeClade.tsv
-
-
-   hgsql -e "delete from hgcentral.genomeClade"
-   hgsql -e "load data local infile \"$BROWSERDIR/genomeClade.tsv\" into table hgcentral.genomeClade ignore 1 lines;"
-
-
- awk -F '\t' -v name="name"  -v organism="organism" 'NR==1 {for (i=1; i<=NF; i++){ix[$i]=i}; print "genome","name"} ;
-    NR>1  { if(!($ix[organism] in p)) {print $ix[organism], $ix[name]; p[$ix[organism]]=$ix[organism] } }' OFS='\t' $BROWSERDIR/db.tsv > $BROWSERDIR/defaultDb.tsv
-
-
-    hgsql -e "delete from hgcentral.defaultDb"
-    hgsql -e "load data local infile \"$BROWSERDIR/defaultDb.tsv\" into table hgcentral.defaultDb ignore 1 lines;"
+######################################
+#### make genomeClade table  #########
+######################################
 
 
+awk -F '\t' -v clade="clade"  -v organism="organism" '
+NR==1 {
+  for (i=1; i<=NF; i++){
+    ix[$i]=i
+  }
+  print "genome","clade","priority"}
+NR>1  {
+  if(!($ix[organism] in p)) {
+    print $ix[organism], $ix[clade], NR
+    p[$ix[organism]]=$ix[organism]
+  }
+}' OFS='\t' $BROWSERDIR/db.tsv > $BROWSERDIR/genomeClade.tsv
 
 
+hgsql -e "delete from hgcentral.genomeClade"
+hgsql -e "load data local infile \"$BROWSERDIR/genomeClade.tsv\" into table hgcentral.genomeClade ignore 1 lines;"
 
-# echo "creating dbDb entry"
-# $MYSQL -e "INSERT INTO hgcentral.dbDb (name, description, nibPath, organism, defaultPos, active, orderKey, genome, scientificName, htmlPath, hgNearOk, hgPbOk, sourceName, taxId) VALUES (\"$name\", \"$assembly\", \"$GBDIR/$name\", \"$name\", \""$defchrom":1-"$defstop"\", 1, 1, \"$name\", \"$name\", \"$GBDIR/$name/html/description.html\", 0, 0, \"$name\", $taxonomic_id);"
+######################################
+####### make defaultDb table  ########
+######################################
 
-# only for pioneer genomes
-# echo "creating defaultDb entry"
-# $MYSQL -e "INSERT INTO hgcentral.defaultDb (name, genome) VALUES (\"$name\", \"$name\");"
+awk -F '\t' -v name="name"  -v organism="organism" '
+NR==1 {
+  for (i=1; i<=NF; i++){
+    ix[$i]=i
+  }
+  print "genome","name"
+}
+NR>1  {
+  if(!($ix[organism] in p)) {
+    print $ix[organism], $ix[name]
+    p[$ix[organism]]=$ix[organism]
+  }
+}' OFS='\t' $BROWSERDIR/db.tsv > $BROWSERDIR/defaultDb.tsv
 
-# echo "inserting clade entry"
-# $MYSQL -e "INSERT INTO hgcentral.clade (name, label, priority) VALUES (\"$clade\", \"$clade\", \"$taxonomic_id\");"
 
-# only for pioneer genomes
-# echo "inserting genomeClade entry"
-# $MYSQL -e "INSERT INTO hgcentral.genomeClade (genome,clade,priority) VALUES (\"$name\",\"$clade\",\"$taxonomic_id\")"
+hgsql -e "delete from hgcentral.defaultDb"
+hgsql -e "load data local infile \"$BROWSERDIR/defaultDb.tsv\" into table hgcentral.defaultDb ignore 1 lines;"
