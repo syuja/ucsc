@@ -62,7 +62,7 @@ do
 
     >&2 echo "  creating track database file"
 
-    awk -F "\t" '{if(NR==1){split($0,xx,"\t"); nf=NF} ; for (i = 1; i <= nf; i++) print xx[i]" "$i; print ""  }' $GBDIR/$name/trackDb.tsv | grep -Pv ' NA$' | grep -v 'bigDataUrl' | grep -Pv '^_' > $GBDIR/$name/trackDb.ra
+    awk -F "\t" '{if(NR==1){split($0,xx,"\t"); nf=NF} ; if(NR>1){for (i = 1; i <= nf; i++) print xx[i]" "$i; print ""  }}' $GBDIR/$name/trackDb.tsv | grep -Pv ' NA$' | grep -v 'bigDataUrl' | grep -Pv '^_' > $GBDIR/$name/trackDb.ra
 
 
     # >&2 echo "  making searches"
