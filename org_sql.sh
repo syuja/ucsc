@@ -64,21 +64,21 @@ do
 
     awk -F "\t" '{if(NR==1){split($0,xx,"\t"); nf=NF} ; for (i = 1; i <= nf; i++) print xx[i]" "$i; print ""  }' $GBDIR/$name/trackDb.tsv | grep -Pv ' NA$' | grep -v 'bigDataUrl' | grep -Pv '^_' > $GBDIR/$name/trackDb.ra
 
-    cols=$(head -n 1 $GBDIR/$name/trackDb.tsv)
 
-    >&2 echo "  making searches"
-
-    cat $GBDIR/$name/trackDb.tsv | while IFS=$'\t' read -r $cols
-    do
-      if [ "$track" != 'track' ] && [ "$_searchable" -gt 0 ]; then
-        echo "searchName $track"
-        echo "searchTable $track"
-        echo "searchType bed"
-        echo "searchPriority $_searchable"
-        echo "searchMethod fuzzy"
-        echo ""
-      fi
-    done >> $GBDIR/$name/trackDb.ra
+    # >&2 echo "  making searches"
+    #
+    # cols=$(head -n 1 $GBDIR/$name/trackDb.tsv)
+    # tail -n+2 $GBDIR/$name/trackDb.tsv | while IFS=$'\t' read -r $cols
+    # do
+    #   if [ "$searchPriority" != "NA" ]; then
+    #     echo "searchName $track"
+    #     echo "searchTable $track"
+    #     echo "searchType bed"
+    #     echo "searchPriority $searchPriority"
+    #     echo "searchMethod fuzzy"
+    #     echo ""
+    #   fi
+    # done >> $GBDIR/$name/trackDb.ra
 
     >&2 echo "  making track description pages"
 
@@ -86,7 +86,7 @@ do
     cols=$(head -n 1 $GBDIR/$name/trackDb.tsv)
     tail -n+2 $GBDIR/$name/trackDb.tsv | while IFS=$'\t' read -r $cols
     do
-      if [ "$track" != 'track' ] && [ "$_methods" != "NA" ]; then
+      if [ "$_methods" != "NA" ]; then
 
         echo "<h2>Credits</h2> $_credits <hr>" > $GBDIR/$name/${html}.html
 
