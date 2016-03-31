@@ -66,11 +66,11 @@ do
 
 
     # >&2 echo "  making searches"
-    #
+
     # cols=$(head -n 1 $GBDIR/$name/trackDb.tsv)
     # tail -n+2 $GBDIR/$name/trackDb.tsv | while IFS=$'\t' read -r $cols
     # do
-    #   if [ "$searchPriority" != "NA" ]; then
+    #   if [ "$searchPriority" != "NA" ] && [ type == "bed"* ]; then
     #     echo "searchName $track"
     #     echo "searchTable $track"
     #     echo "searchType bed"

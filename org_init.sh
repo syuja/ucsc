@@ -1,12 +1,18 @@
 # RUN THIS ON THE WEB SERVER
-name="zeaMayB73_v3"
+wget -brA 'dna_sm.genome.fa.gz' ftp://ftp.ensemblgenomes.org/pub/plants/release-31/fasta/
+
+
+name="JGIv2.0"
+dname="setaria_italica"
 faurl="ftp://ftp.ensemblgenomes.org/pub/release-22/plants/fasta/zea_mays/dna/Zea_mays.AGPv3.22.dna_sm.genome.fa.gz"
 
 
 mkdir -p $GBDIR/$name/bbi
 mkdir -p $GBDIR/$name/html
 
-curl -so $GBDIR/$name/genome.fa.gz $faurl
+#curl -so $GBDIR/$name/genome.fa.gz $faurl
+cp ftp.ensemblgenomes.org/pub/plants/release-31/fasta/$dname/dna/*dna_sm.genome.fa.gz $GBDIR/$name/genome.fa.gz
+
 gunzip $GBDIR/$name/genome.fa.gz
 
 faToTwoBit $GBDIR/$name/genome.fa $GBDIR/$name/genome.2bit
