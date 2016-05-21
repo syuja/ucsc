@@ -1,6 +1,6 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-HUBDBID="10s9OMdrj-xRVZMunPMijqBoKWc5nmePOvUhZOA-XYxI"
+HUBDBID="1_IzQ4J_yi6m1WCO2PBo9_mqvse2ShGX2dEYaB1ncQcg"
 
 E_OPTERROR=85
 
@@ -14,57 +14,60 @@ fi
 
 #set -e
 
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
 hubname=$1
 
 >&2 echo "downloading hub list"
 
-curl -L "https://spreadsheets.google.com/feeds/download/spreadsheets/Export?key="$HUBDBID"&hl=en&exportFormat=tsv" | tr -d "\r" > hubDb.tsv && echo "" >> hubDb.tsv
+curl -sL "https://spreadsheets.google.com/feeds/download/spreadsheets/Export?key="$HUBDBID"&hl=en&exportFormat=tsv" | tr -d "\r" > $DIR/hubDb.tsv && echo "" >> $DIR/hubDb.tsv
 
 ocols=$(head -n 1 hubDb.tsv)
 tail -n+2 hubDb.tsv | while IFS=$'\t' read -r $ocols
 do
-  if [[ "$name" == "$hubname" ]]; then
+  if [[ "$name" == "$hubname" ]] || [[ "$hubname" == "all" ]]; then
 
-    mkdir -p $hubname
+    mkdir -p $DIR/$name
 
-    >&2 echo "downloading info for hub \"$hubname\""
+    >&2 echo "downloading info for hub \"$name\""
 
-    curl -L "https://spreadsheets.google.com/feeds/download/spreadsheets/Export?key="$hubId"&hl=en&exportFormat=tsv" | tr -d "\r" > $hubname/hub.tsv && echo "" >> $hubname/hub.tsv
+    curl -sL "https://spreadsheets.google.com/feeds/download/spreadsheets/Export?key="$hubId"&hl=en&exportFormat=tsv" | tr -d "\r" > $DIR/$name/hub.tsv && echo "" >> $DIR/$name/hub.tsv
 
-    grep -Pv '^_' $hubname/hub.tsv | tr '\t' ' ' > $hubname/hub.txt
+    grep -v '_genomes' $DIR/$name/hub.tsv | tr '\t' ' ' > $DIR/$name/hub.txt
 
-    genomesId=$(grep _genomes $hubname/hub.tsv | cut -f 2)
+    genomesId=$(grep _genomes $DIR/$name/hub.tsv | cut -f 2)
 
-    curl -L "https://spreadsheets.google.com/feeds/download/spreadsheets/Export?key="$genomesId"&hl=en&exportFormat=tsv" | tr -d "\r" > $hubname/genomes.tsv && echo "" >> $hubname/genomes.tsv
+    curl -sL "https://spreadsheets.google.com/feeds/download/spreadsheets/Export?key="$_genomesId"&hl=en&exportFormat=tsv" | tr -d "\r" > $DIR/$name/genomes.tsv && echo "" >> $DIR/$name/genomes.tsv
 
 
-    rm -f $hubname/genomes.txt
+    rm -f $DIR/$name/genomes.txt
 
     ### HTML ###
-    gcols=$(head -n 1 $hubname/genomes.tsv)
-    tail -n+2 $hubname/genomes.tsv | while IFS=$'\t' read -r $gcols
+    gcols=$(head -n 1 $DIR/$name/genomes.tsv)
+    tail -n+2 $DIR/$name/genomes.tsv | while IFS=$'\t' read -r $gcols
     do
 
-      echo "genome $genome" >> $hubname/genomes.txt
-      echo "trackDb $genome/hubDb.txt" >> $hubname/genomes.txt
 
-      mkdir -p $hubname/$genome/bbi
+      awk -F "\t" '{if(NR==1){split($0,xx,"\t"); nf=NF} ; if(NR>1 && $1==1){for (i = 1; i <= nf; i++) print xx[i]" "$i; print ""  }}' $DIR/$name/genomes.tsv | grep -v " NA$" | grep -v "^_" > $DIR/$name/genomes.txt
+
+
+      mkdir -p $DIR/$name/$genome/bbi
 
       >&2 echo "downloading track table for \"$genome\""
 
-      curl -L "https://spreadsheets.google.com/feeds/download/spreadsheets/Export?key="$genomeId"&hl=en&exportFormat=tsv" | tr -d "\r" > $hubname/$genome/hubDb.tsv && echo "" >> $hubname/$genome/hubDb.tsv
+      curl -sL "https://spreadsheets.google.com/feeds/download/spreadsheets/Export?key="$_genomeId"&hl=en&exportFormat=tsv" | tr -d "\r" > $DIR/$name/$genome/hubDb.tsv && echo "" >> $DIR/$name/$genome/hubDb.tsv
 
       >&2 echo "  creating track database file"
 
-      awk -F "\t" '{if(NR==1){split($0,xx,"\t"); nf=NF} ; if(NR>1 && $1==1){for (i = 1; i <= nf; i++) print xx[i]" "$i; print ""  }}' $hubname/$genome/hubDb.tsv | grep -Pv ' NA$' | grep -Pv '^_' > $hubname/$genome/hubDb.txt
+      awk -F "\t" '{if(NR==1){split($0,xx,"\t"); nf=NF} ; if(NR>1 && $1==1){for (i = 1; i <= nf; i++) print xx[i]" "$i; print ""  }}' $DIR/$name/$genome/hubDb.tsv | grep -v " NA$" | grep -v "^_" > $DIR/$name/$genome/hubDb.txt
 
     done # end genome loop
 
-    >&2 echo "updating hub on server"
-    >&2 echo "enter password for $userhost"
+    # >&2 echo "updating hub on server"
+    # >&2 echo "enter password for $userhost"
+    #
 
-
-    scp -r $hubname/ ${userhost}:$(dirname $path)
+    #scp -r $DIR/$hubname/ ${userhost}:$(dirname $path)
 
   fi # end hub
 

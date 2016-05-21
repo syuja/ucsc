@@ -1,0 +1,52 @@
+track mg2015_huvec_Input_Reads
+shortLabel mg2015 huvec_Input_Reads
+longLabel huvec_Input_Reads
+type bam
+visibility squish
+composite on
+html html/mg2015_huvec_Input_Reads
+
+track mg2015_huvec_Input_Reads_normoxic_defaultStringency
+shortLabel mg2015_huvec_Input_Reads_normoxic_defaultStringency
+longLabel mg2015_huvec_Input_Reads_normoxic_defaultStringency
+type bam
+visibility squish
+bigDataUrl bbi/control_input_q20_psort.bam
+parent mg2015_huvec_Input_Reads
+html html/mg2015_huvec_Input_Reads_normoxic_defaultStringency
+
+track mg2015_huvec_Input_Reads_hypoxic_defaultStringency
+shortLabel mg2015_huvec_Input_Reads_hypoxic_defaultStringency
+longLabel mg2015_huvec_Input_Reads_hypoxic_defaultStringency
+type bam
+visibility squish
+bigDataUrl bbi/hypoxia_input_q20_psort.bam
+parent mg2015_huvec_Input_Reads
+html html/mg2015_huvec_Input_Reads_hypoxic_defaultStringency
+
+track mg2015_huvec_8oG-ChIP_Reads
+shortLabel mg2015 huvec_8oG-ChIP_Reads
+longLabel mg2015_huvec_8oG-ChIP_Reads
+type bam
+visibility squish
+composite on
+html html/mg2015_huvec_8oG-ChIP_Reads
+
+track mg2015_huvec_8oG-ChIP_Reads_normoxic_defaultStringency
+shortLabel mg2015_huvec_8oG-ChIP_Reads_normoxic_defaultStringency
+longLabel mg2015_huvec_8oG-ChIP_Reads_normoxic_defaultStringency
+type bam
+visibility squish
+bigDataUrl bbi/control_8oxoG_q20_psort.bam
+parent mg2015_huvec_8oG-ChIP_Reads
+html html/mg2015_huvec_8oG-ChIP_Reads_normoxic_defaultStringency
+
+track mg2015_huvec_8oG-ChIP_Reads_hypoxic_defaultStringency
+shortLabel mg2015_huvec_8oG-ChIP_Reads_hypoxic_defaultStringency
+longLabel mg2015_huvec_8oG-ChIP_Reads_hypoxic_defaultStringency
+type bam
+visibility squish
+bigDataUrl bbi/mg2015_huvec_8oG-ChIP_Reads_hypoxic_defaultStringency.bam
+parent mg2015_huvec_8oG-ChIP_Reads
+html html/mg2015_huvec_8oG-ChIP_Reads_hypoxic_defaultStringency
+

@@ -24,6 +24,7 @@ mkdir -p $WEBROOT
 ln -s $WEBROOT /var/www
 
 sed -i 's#^DocumentRoot.*#DocumentRoot "/var/www"#g' /etc/httpd/conf/httpd.conf # replace path here with $WEBROOT
+sed -i 's#\/var\/www\/html/\/var\/www/g' /etc/httpd/conf/httpd.conf 
 # activate xbithack
 echo -e 'XBitHack on\n'\
 '<Directory /var/www/>\n'\
