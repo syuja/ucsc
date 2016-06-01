@@ -1,5 +1,0 @@
-hub gillispie
-shortLabel gillispie
-longLabel gillispie
-genomesFile genomes.txt
-email bass@bio.fsu.edu
