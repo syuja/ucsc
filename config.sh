@@ -1,16 +1,18 @@
 # PROCEDURE
-# launch an admin container and run nfs_init.sh
-# launch an admin container and run ugb_init.sh
+# launch an admin container and run install_software.sh
+# launch an admin container and run initiate_browser.sh
 # launch a  mysql container
 # launch a    web container
 
 export DBDBID="1ilMW4gv8XsECFuKpSlOFWVhO_04qiogVdQHYYxQF2ZM"
 
+export BASEDIR=/vault
+
 
 # PERSISTENT DATA LOCATIONS
-export     GBDIR=/vault/gbdb       #location to store track and genome data
-export     SWDIR=/vault/software   #location to store software
-export BROWSERDIR=/vault/gbtest3   #location to store browser html and database
+export      GBDIR=${BASEDIR}/gbdb       #location to store track and genome data
+export      SWDIR=${BASEDIR}/software   #location to store software
+export BROWSERDIR=${BASEDIR}/gbtest3   #location to store browser html and database
 
 # HOST INFO
 export        DOMAIN=$(dnsdomainname)
@@ -36,7 +38,7 @@ export    MYSQLDATA=$BROWSERDIR/mysql
 export      WEBROOT=$BROWSERDIR/www
 export      CGI_BIN=${WEBROOT}/cgi-bin
 export     MACHTYPE='x86_64'
-export   MySQL_USER=${SQL_USER}
+export   MySQL_USER=$SQL_USER
 export        MYSQL="mysql -u${MySQL_USER} -p${SQL_PASSWORD}"
 export      USE_SSL=1
 export USE_SAMTABIX=1
