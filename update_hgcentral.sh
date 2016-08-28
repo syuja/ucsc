@@ -4,9 +4,9 @@ hgsql -e "delete from hgcentral.hubPublic"
 hgsql -e "delete from hgcentral.blatServers"
 hgsql -e "delete from hgcentral.liftOverChain"
 hgsql -e "delete from hgcentral.targetDb"
+hgsql -e "delete from hgcentral.dbDb"
 
-wget -qO- "https://spreadsheets.google.com/feeds/download/spreadsheets/Export?key="${DBDBID}"&hl=en&exportFormat=tsv" | tr -d "\r" > $BROWSERDIR/db.tsv && echo "" >> $BROWSERDIR/db.tsv
-
+curl -sL "https://spreadsheets.google.com/feeds/download/spreadsheets/Export?key="$DBDBID"&hl=en&exportFormat=tsv" | tr -d "\r" > $BROWSERDIR/db.tsv && echo "" >> $BROWSERDIR/db.tsv
 
 ######################################
 ##### make assembly html files #######
