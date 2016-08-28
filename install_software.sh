@@ -4,7 +4,7 @@
 mkdir -p $SWDIR
 mkdir -p $SWDIR/bin/$MACHTYPE
 mkdir -p ${CGI_BIN}
-mkdir -p ${CGI_BIN}-
+ln -s ${CGI_BIN} ${CGI_BIN}-
 
 #grab and compile samtabix
 git clone http://genome-source.cse.ucsc.edu/samtabix.git $SWDIR/samtabix
