@@ -55,7 +55,7 @@ chmod -R 755 $MYSQLDATA #necessary?
 ######################
 
 # allow an admin node to do anything
-${MYSQL} -e "GRANT ALL PRIVILEGES on *.* TO root@'%' IDENTIFIED BY \'"$SQL_PASSWORD"\' WITH GRANT OPTION;" mysql
+${MYSQL} -e "GRANT ALL PRIVILEGES on *.* TO root@'%' IDENTIFIED BY '"$SQL_PASSWORD"' WITH GRANT OPTION;" mysql
 
 ${MYSQL} -e "GRANT SELECT on hgFixed.* TO readonly@'%' IDENTIFIED BY 'access';" mysql
 
@@ -75,15 +75,18 @@ pkill mysqld
 # clear from hgcentral: defaultDb, clade, genomeClade, dbDb, dbDbArch, liftOverChain, hubPublic, targetDb
 # make sure host info is correct for custom tracks
 
-mkdir -p $WEBROOT
+mkdir -p $CGI_BIN
+
+rsync --delete -az rsync://hgdownload.cse.ucsc.edu/cgi-bin/ $CGI_BIN
+rsync --delete -az rsync://hgdownload.cse.ucsc.edu/htdocs/ $WEBROOT/
+
 ln -s $WEBROOT $WEBROOT/html
 ln -s $WEBROOT $WEBROOT/htdocs
+
 ln -s $CGI_BIN /usr/lib/cgi-bin
 ln -s $CGI_BIN $WEBROOT/cgi-bin- #if $USER not defined
 ln -s $CGI_BIN $WEBROOT/cgi-bin-root
 
-rsync --delete -az rsync://hgdownload.cse.ucsc.edu/cgi-bin/ $CGI_BIN
-rsync --delete -az rsync://hgdownload.cse.ucsc.edu/htdocs/ $WEBROOT/
 
 # get all html files in toplevel
 # directories we want:  admin cgi-bin FAQ
@@ -93,7 +96,7 @@ rsync --delete -az rsync://hgdownload.cse.ucsc.edu/htdocs/ $WEBROOT/
 # delete left toolbar from index
 sed -i '/<TABLE WIDTH="100%" BORDER=0 CELLPADDING=0 CELLSPACING=0>/,/<\/TD><\/TR><\/TABLE>/d' $WEBROOT/index.html
 
-rm -f $WEBROOT/trash
+rm -fr $WEBROOT/trash
 mkdir -p $WEBROOT/trash
 chmod 777 $WEBROOT/trash
 chown -R apache:apache $WEBROOT
