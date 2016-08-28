@@ -58,11 +58,14 @@ chmod -R 755 $MYSQLDATA #necessary?
 ${MYSQL} -e "GRANT ALL PRIVILEGES on *.* TO root@'%' IDENTIFIED BY '"$SQL_PASSWORD"' WITH GRANT OPTION;" mysql
 
 ${MYSQL} -e "GRANT SELECT on hgFixed.* TO readonly@'%' IDENTIFIED BY 'access';" mysql
+${MYSQL} -e "GRANT SELECT on hgFixed.* TO readonly@'localhost' IDENTIFIED BY 'access';" mysql
 
 # allow webserver to modify hgcentral and customTrash
 ${MYSQL} -e "GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,DROP,ALTER on hgcentral.* TO readwrite@'%."$DOMAIN"' IDENTIFIED BY 'update';" mysql
+${MYSQL} -e "GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,DROP,ALTER on hgcentral.* TO readwrite@'localhost' IDENTIFIED BY 'update';" mysql
 
 ${MYSQL} -e "GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,DROP,ALTER,INDEX on customTrash.* TO readwrite@'%."$DOMAIN"' IDENTIFIED by 'update';" mysql
+${MYSQL} -e "GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,DROP,ALTER,INDEX on customTrash.* TO readwrite@'localhost' IDENTIFIED by 'update';" mysql
 
 ${MYSQL} -e "FLUSH PRIVILEGES;"
 
