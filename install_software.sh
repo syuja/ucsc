@@ -6,7 +6,7 @@ mkdir -p $SWDIR/bin/$MACHTYPE
 
 
 #grab and compile samtabix
-git clone https://github.com/ucscGenomeBrowser/kent $SWDIR/samtabix
+git clone http://genome-source.cse.ucsc.edu/samtabix.git $SWDIR/samtabix
 cd $SWDIR/samtabix
 make
 
