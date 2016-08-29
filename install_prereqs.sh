@@ -35,4 +35,3 @@ sed -i 's/hgBeacon//g' $SWDIR/kent/src/hg/makefile
 sed -i 's/hgMirror//g' $SWDIR/kent/src/hg/makefile #hgMirror makefile breaks cgi make - -${USER} issue
 echo 'L+= -lz' >> $SWDIR/kent/src/inc/common.mk
 cd $SWDIR/kent/src
-make utils
