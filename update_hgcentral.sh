@@ -1,17 +1,18 @@
+# clear from hgcentral: defaultDb, clade, genomeClade, dbDb, dbDbArch, liftOverChain, hubPublic, targetDb
+# make sure host info is correct for custom tracks
 
+
+# clear databases
 hgsql -e "delete from hgcentral.dbDbArch"
 hgsql -e "delete from hgcentral.hubPublic"
 hgsql -e "delete from hgcentral.blatServers"
 hgsql -e "delete from hgcentral.liftOverChain"
 hgsql -e "delete from hgcentral.targetDb"
-hgsql -e "delete from hgcentral.dbDb"
 
+# download genome spreadsheet
 curl -sL "https://spreadsheets.google.com/feeds/download/spreadsheets/Export?key="$DBDBID"&hl=en&exportFormat=tsv" | tr -d "\r" > $BROWSERDIR/db.tsv && echo "" >> $BROWSERDIR/db.tsv
 
-######################################
-##### make assembly html files #######
-######################################
-
+# make assembly html files #######
 cols=$(head -n 1 $BROWSERDIR/db.tsv)
 tail -n+2 $BROWSERDIR/db.tsv | while IFS=$'\t' read -r $cols
 do
@@ -24,10 +25,7 @@ do
 
 done
 
-######################################
-####### make dbDb table  #############
-######################################
-
+# make dbDb table
 awk -F '\t' -v header=name,description,nibPath,organism,defaultPos,active,orderKey,genome,scientificName,htmlPath,hgNearOk,hgPbOk,sourceName  '
 BEGIN {
   split(header,cols,",")
@@ -44,11 +42,7 @@ BEGIN {
 hgsql -e "delete from hgcentral.dbDb"
 hgsql -e "load data local infile \"$BROWSERDIR/dbDb.tsv\" into table hgcentral.dbDb ignore 1 lines;"
 
-######################################
-####### make clade table  ############
-######################################
-
-
+# make clade table
 awk -F '\t' -v clade="clade"  '
 NR==1 {
   for (i=1; i<=NF; i++){
@@ -64,11 +58,7 @@ NR>1  {
 hgsql -e "delete from hgcentral.clade"
 hgsql -e "load data local infile \"$BROWSERDIR/clade.tsv\" into table hgcentral.clade ignore 1 lines;"
 
-######################################
-#### make genomeClade table  #########
-######################################
-
-
+# make genomeClade table
 awk -F '\t' -v clade="clade"  -v organism="organism" '
 NR==1 {
   for (i=1; i<=NF; i++){
@@ -82,14 +72,10 @@ NR>1  {
   }
 }' OFS='\t' $BROWSERDIR/db.tsv > $BROWSERDIR/genomeClade.tsv
 
-
 hgsql -e "delete from hgcentral.genomeClade"
 hgsql -e "load data local infile \"$BROWSERDIR/genomeClade.tsv\" into table hgcentral.genomeClade ignore 1 lines;"
 
-######################################
-####### make defaultDb table  ########
-######################################
-
+# make defaultDb table
 awk -F '\t' -v name="name"  -v organism="organism" '
 NR==1 {
   for (i=1; i<=NF; i++){
@@ -103,7 +89,6 @@ NR>1  {
     p[$ix[organism]]=$ix[organism]
   }
 }' OFS='\t' $BROWSERDIR/db.tsv > $BROWSERDIR/defaultDb.tsv
-
 
 hgsql -e "delete from hgcentral.defaultDb"
 hgsql -e "load data local infile \"$BROWSERDIR/defaultDb.tsv\" into table hgcentral.defaultDb ignore 1 lines;"
