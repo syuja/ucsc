@@ -1,3 +1,6 @@
+docker run -h $HOSTNAME -v /vault:/vault -it centos:7 bash # copy config or add to vault for access
+##################################################
+
 yum update -y && yum install -y \
 httpd \
 rsync \
@@ -18,9 +21,6 @@ chmod 600 ~/.hg.conf
 #make software directory
 mkdir -p $SWDIR/bin/$MACHTYPE
 ln -s $SWDIR/bin ~/bin
-
-mkdir -p ${CGI_BIN}
-ln -s ${CGI_BIN} ${CGI_BIN}-
 
 #grab and compile samtabix
 git clone http://genome-source.cse.ucsc.edu/samtabix.git $SWDIR/samtabix

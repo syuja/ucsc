@@ -1,3 +1,6 @@
+docker run -h $HOSTNAME -v /vault:/vault -it centos:7 bash # copy config or add to vault for access
+##################################################
+
 yum update -y && yum install -y \
 httpd \
 rsync \
@@ -32,7 +35,7 @@ chmod 755 $BROWSERDIR/my.cnf
 rm -f /etc/my.cnf
 ln -s $BROWSERDIR/my.cnf /etc/my.cnf
 
-# define mysql socketfile 
+# define mysql socketfile
 mkdir -p $MYSQLDATA
 rmdir /var/lib/mysql
 ln -s $MYSQLDATA /var/lib/mysql #shouldnt need this, why is is looking for socket here? look in hg.conf
