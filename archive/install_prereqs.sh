@@ -28,9 +28,11 @@ cd $SWDIR/samtabix
 make
 
 #grab and compile kent source
-git clone https://github.com/ucscGenomeBrowser/kent $SWDIR/kent
-cd $SWDIR/kent
-git checkout -t -b beta origin/beta
+#git clone https://github.com/ucscGenomeBrowser/kent $SWDIR/kent
+#cd $SWDIR/kent
+#git checkout -t -b beta origin/beta
+cd $SWDIR
+curl -sLo master.zip https://github.com/ucscGenomeBrowser/kent/archive/master.zip && unzip -q master.zip && mv kent-master kent && rm -f master.zip
 sed -i 's/hgBeacon//g' $SWDIR/kent/src/hg/makefile
 sed -i 's/hgMirror//g' $SWDIR/kent/src/hg/makefile #hgMirror makefile breaks cgi make - -${USER} issue
 echo 'L+= -lz' >> $SWDIR/kent/src/inc/common.mk

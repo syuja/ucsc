@@ -101,16 +101,16 @@ tail -n+2 $BROWSERDIR/db.tsv | while IFS=$'\t' read -r $cols
 do
   # if track spreadsheet defined for genome
   if [ "$gid" != "NA" ]; then
-    
+
     # download track spreadsheet
     curl -sL "https://spreadsheets.google.com/feeds/download/spreadsheets/Export?key="$gid"&hl=en&exportFormat=tsv" | tr -d "\r" > $nibPath/trackDb.tsv && echo "" >> $nibPath/trackDb.tsv
-    
+
     # create track database file from spreadsheet
     awk -F "\t" '{if(NR==1){split($0,xx,"\t"); nf=NF} ; if(NR>1 && $1==1){for (i = 1; i <= nf; i++) print xx[i]" "$i; print ""  }}' $nibPath/trackDb.tsv | grep -v " NA$" | grep -v "^_" > $nibPath/trackDb.ra
-    
+
     # get header of track spreadsheet
     tcols=$(head -n 1 $nibPath/trackDb.tsv)
-    
+
     # loop through tracks
     tail -n+2 $nibPath/trackDb.tsv | while IFS=$'\t' read -r $tcols
     do
@@ -119,9 +119,12 @@ do
         hgBbiDbLink $name $track ${nibPath}/bbi/ $bigDataUrl
       fi
     done
-    
+
+    # loop through beds/nonbinaries and load into database HERE
+    # hgLoadBed
+
     # recreate trackDb table
     hgTrackDb $nibPath $name trackDb ${SWDIR}/kent/src/hg/lib/trackDb.sql $nibPath
-    
+
   fi
 done
