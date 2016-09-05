@@ -4,6 +4,7 @@
 # launch a  mysql container
 # launch a    web container
 
+#DBDBID is Google spreadsheet key ==> id of spreadsheet I want to download and display
 export DBDBID="1ilMW4gv8XsECFuKpSlOFWVhO_04qiogVdQHYYxQF2ZM"
 
 export BASEDIR=/vault
