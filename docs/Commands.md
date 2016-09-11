@@ -37,4 +37,29 @@
 
 #### Docker Networks:    
 Important for connecting two containers on one host or on multiple hosts.  
+- `docker run -d -P --name <name> <image_name> [commands]`: naming serves 2 purposes: 1) easier to remember 2) other containers can refer to it.  
+  - `docker run -d -P --name web training/webapp python app.py`  
+Can use `inspect`, `ps`, `rm` and `stop` to see the name.  
+
+- `docker network -ls`: lists the networks for the container  
+- 2 networks drivers `bridge` and `overlay`: `bridge` limited to single host with multiple containers;   
+- `docker network inspect <bridge>`: can be used to find the container's IP address  
+- `docker network disconnect <network> <container>`: disconnects container, can never disconnect bridge   
+  - networks are a good way to isolate containers   
+
+You can create your own networks and add containers to them:  
+- `docker network create -d bridge my-bridge-network`:  `-d` tells docker to use `bridge` driver (not overlay)  
+- `docker network ls`: lists networks   
+- `docker network inspect my-bridge-network`:  to see the new network ==> should be empty  
+**add a container to a network**:  
+- `docker run -d --network=my-bridge-network --name db training/postgress`:  
+  - `-d` means as run as a daemon (detached), `--network` specifies to attach it  
+  - if don't specify `--network`, it will run under the default `bridge` network   
+  - use `docker network inspect <network>` to find the ip addresses  
+- `docker network connect <network_name> <container>`: will bring container into a network; instead of leaving it in the default `bridge` network   
+  - once they are connected to the same network, they can ping each other using their container names   
+  
+
+#### Docker Volumes:  
+
 
