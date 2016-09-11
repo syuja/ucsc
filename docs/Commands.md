@@ -58,6 +58,7 @@ You can create your own networks and add containers to them:
   - use `docker network inspect <network>` to find the ip addresses  
 - `docker network connect <network_name> <container>`: will bring container into a network; instead of leaving it in the default `bridge` network   
   - once they are connected to the same network, they can ping each other using their container names   
+- `docker exec -it db bash`: `exec` is useful when a container is running in the background; `run` will try to pull again, but `exec` brings it to the foreground   
   
 
 #### Docker Volumes:  
