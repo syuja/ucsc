@@ -5,9 +5,9 @@
 ## Docker Commands:   
 - `docker images`:  lists all images on local system (useful for pushing)  
 - `docker run [-p, -P] <image_name[:]>`:   tells docker to run image; **pulls** image if not found locally; `-p` or `-P` map ports; `:` can tell which version if there are multiple versions(important for debugging)    
-  - `docker run syuja/whalesay cowsay boo`: executes cowsay program inside the image  
+  - `docker run syuja/whalesay cowsay boo`: runs cowsay program inside the image  
   - `docker run ubuntu /bin/echo "hello world"`  
-  - `docker run -t -i ubuntu /bin/bash`: `-t` gets terminal inside container, `-i` grabs [stdin] (interactive)  
+  - `docker run -t -i ubuntu /bin/bash`: `-t` assigns tty inside container, `-i` grabs stdin (interactive)  
   - `docker run -d ubuntu /bin/sh -c "while true; do echo hello world; sleep 1; done"`:  `-d` runs in the bg  
 - `docker ps [-l-a]`: shows running process for all containers; gives container names; `-l` shows last container; `-a` stopped containers   
 -  `docker logs [-f] <container_name>`: looks inside the container; `-f` causes it to behave like `tail -f`    
@@ -41,7 +41,7 @@ Important for connecting two containers on one host or on multiple hosts.
   - `docker run -d -P --name web training/webapp python app.py`  
 Can use `inspect`, `ps`, `rm` and `stop` to see the name.  
 
-- `docker network -ls`: lists the networks for the container  
+- `docker network ls`: lists the networks for the container  
 - 2 networks drivers `bridge` and `overlay`: `bridge` limited to single host with multiple containers;   
 - `docker network inspect <bridge>`: can be used to find the container's IP address  
 - `docker network disconnect <network> <container>`: disconnects container, can never disconnect bridge   
