@@ -61,6 +61,22 @@ You can create your own networks and add containers to them:
 - `docker exec -it db bash`: `exec` is useful when a container is running in the background; `run` will try to pull again, but `exec` brings it to the foreground   
   
 
-#### Docker Volumes:  
+#### Docker Volumes:  (single accessible storage area within a file system)  
+UnionFS : file system that works by layers,  
+Data Volume: specially-designed directory within 1 or more containers   
+bypasses the UnionFS  
 
+Volumes: can be shared/reused among containers  
+-changes to data volume will not be included when you update an image  
+-data volumes persist even if the container itself is deleted  
+
+The data in a volume exists outside of the container.  
+
+There are several options.   
+Perhaps, the most useful may be to mount a host file as a data volume.   
+
+    docker run --rm -it -v ~/.bash_history:/root/.bash_history[:ro] ubuntu /bin/bash
+`:ro` can specify to mount read-only  
+  - `docker inspect <container>`: can help locate a volume, "Source" is the host location   
+  - `docker run -d -P --name web -v /webapp training/webapp python app.py`: creates a volume at `/webapp` in the container  
 
